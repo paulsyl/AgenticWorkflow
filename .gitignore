@@ -1,0 +1,14 @@
+# Virtual environment
+.venv/
+
+# Nested git repositories / tools
+MUGS_Society/
+.github/
+
+# VS Code workspace files
+MUGS.code-workspace
+.vscode/
+
+# Test output and runtime files
+test_env_created_ids.json
+*.log

@@ -1,0 +1,10 @@
+# .antigravityignore
+node_modules/
+.next/
+dist/
+build/
+.turbo/
+coverage/
+*.log
+*.lock
+.venv/
