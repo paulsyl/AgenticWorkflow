@@ -1,49 +1,133 @@
-# GEMINI.md
+---
+description: This document defines how Antigravity should behave when assisting with this Django project. The goal is to ensure **secure**, **maintainable**, and **production‑ready** code while preventing unsafe or harmful patterns.
+applyTo: '**'
+---
 
-## Project Context
+# Django Website Creation Instructions for Antigravity
 
-- **Core Framework:** Django 5.x / Python 3.11+
-- **Primary Database:** PostgreSQL (utilizing `psycopg3`)
-- **Asynchronous Tasks:** Celery with Redis backend/broker
-- **API Architecture:** Django REST Framework (DRF)
-- **Environment Management:** `django-environ` (via `.env` configuration)
-- **Testing Framework:** `pytest` with `pytest-django`
+## Core Principles
 
-## Agent Persona & Role
+- Always prioritise **security**, **data protection**, and **privacy**.
+- Default to **Django best practices** and **OWASP recommendations**.
+- Avoid generating code that exposes secrets, credentials, or sensitive logic.
+- Prefer clarity and maintainability over cleverness or shortcuts.
 
-You are an expert Senior Django Core Engineer and Backend Security Architect. Your primary objective is to build clean, maintainable, secure, and highly performant Django code, strictly prioritizing Pythonic idioms and explicit design patterns.
+---
 
-## Architecture & Coding Standards
+## Security Requirements
 
-### 1. Code Formatting & Semantics
+### 1. Secret Handling
 
-- **Style Guide:** Adhere strictly to PEP 8 standards. Use explicit, self-documenting variable and function names.
-- **Type Hinting:** Provide explicit Python Type Hints for all function signatures, arguments, and return types.
-- **Documentation:** Include Google-style docstrings for all modules, classes, and public methods.
+- Never hard‑code secrets, API keys, passwords, tokens, or database credentials.
+- Always use environment variables via `os.environ` or Django’s `settings`.
+- When generating examples, use placeholders like `"YOUR_SECRET_HERE"`.
 
-### 2. Model & Database Design
+### 2. Django Settings Safety
 
-- **Fat Models, Skinny Views:** Encapsulate core business logic within Model methods, custom QuerySets, or specialized Service layers (`services.py`). Do not bloat views or controllers.
-- **Query Optimization:** Proactively prevent N+1 query performance regressions. Always leverage `.select_related()` for `ForeignKey`/`OneToOne` relationships and `.prefetch_related()` for `ManyToMany` or reverse relationships.
-- **Migrations:** Never alter or edit an existing migration file that has already been merged or committed. Always generate safe, incremental schemas via `python manage.py makemigrations`.
+Copilot must:
 
-### 3. Views & API Layouts
+- Default `DEBUG = False` unless explicitly asked otherwise.
+- Use secure defaults:
+  - `SECURE_HSTS_SECONDS = 31536000`
+  - `SECURE_SSL_REDIRECT = True`
+  - `SESSION_COOKIE_SECURE = True`
+  - `CSRF_COOKIE_SECURE = True`
+- Never suggest `ALLOWED_HOSTS = ["*"]`.
 
-- **DRF Paradigm:** Prioritize Class-Based Views (CBVs) or ModelViewSets over raw function-based views to keep the routing codebase DRY (Don't Repeat Yourself).
-- **Serialization:** Always validate incoming payloads using strict DRF Serializers. Never perform manual payload parsing inside the view logic.
+### 3. Authentication & Authorization
 
-### 4. Security & Hardening
+- Use Django’s built‑in auth system unless explicitly instructed otherwise.
+- Never implement custom password hashing.
+- Encourage use of:
+  - `django.contrib.auth`
+  - `LoginRequiredMixin`
+  - `PermissionRequiredMixin`
 
-- **Secrets Management:** Never hardcode API tokens, database URIs, or secret keys. Pull all configuration details dynamically out of `environ.Env`.
-- **Permissions:** Default to closed permissions. Ensure every new endpoint or view is guarded explicitly with Django's built-in authentication mixins or DRF `PermissionClasses` (e.g., `IsAuthenticated`).
+### 4. Database Safety
 
-## Testing Quality Gates
+- Avoid raw SQL unless absolutely necessary.
+- When raw SQL is required, enforce parameterised queries.
+- Prefer Django ORM for all CRUD operations.
 
-- Use `pytest` for the testing pipeline.
-- Any time a feature, service, model method, or endpoint is added or altered, write corresponding test coverage inside the local app's `tests/` directory.
-- Avoid using hardcoded database constants in tests; utilize `factory_boy` factories to orchestrate fake model states seamlessly.
+### 5. Input Validation
 
-## Agent Autonomy & Execution Policy
+- Always validate and sanitise user input.
+- Use Django Forms or DRF Serializers for validation.
+- Never trust request data directly.
 
-- **Autopilot Operations (Safe to Run):** You are permitted to autonomously execute local diagnostic scripts, `python manage.py check`, `python manage.py makemigrations`, and `pytest`.
-- **Human Checkpoints
+### 6. File Upload Safety
+
+- Validate file types and sizes.
+- Never store uploaded files in the project root.
+- Use Django’s `FileField` or `ImageField` with safe storage backends.
+
+---
+
+## Coding Standards
+
+### 1. Project Structure
+
+Copilot should follow Django’s recommended structure:
+
+- Separate apps by domain.
+- Use `templates/<app_name>/...`
+- Use `static/<app_name>/...`
+
+### 2. Views
+
+- Prefer class‑based views over function‑based views.
+- Use `ListView`, `DetailView`, `CreateView`, etc., when appropriate.
+
+### 3. URLs
+
+- Use `path()` instead of `url()`.
+- Namespace all app URLs.
+
+### 4. Models
+
+- Use explicit `related_name` for relationships.
+- Avoid circular imports.
+- Use `__str__` methods for readability.
+
+---
+
+## Testing Requirements
+
+Antigravity must:
+
+- Generate tests for new features.
+- Use Django’s `TestCase` or DRF’s `APITestCase`.
+- Include tests for:
+  - Permissions
+  - Validation
+  - Model behaviour
+  - Security‑sensitive logic
+
+---
+
+## Documentation Requirements
+
+- Every generated module must include docstrings.
+- Complex logic must include inline comments.
+- Copilot should generate README updates when adding major features.
+
+---
+
+## Prohibited Behaviours
+
+Antigravity must **never**:
+
+- Generate insecure code.
+- Suggest disabling security middleware.
+- Expose stack traces or internal errors.
+- Produce harmful, abusive, or discriminatory content.
+- Generate code that violates privacy or data‑protection laws.
+
+---
+
+## When Unsure
+
+If Antigravity is uncertain about the user’s intent, it should:
+
+- Ask clarifying questions.
+- Default to the safest possible implementation.
