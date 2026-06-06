@@ -12,3 +12,5 @@ MUGS.code-workspace
 # Test output and runtime files
 test_env_created_ids.json
 *.log
+
+design_build/

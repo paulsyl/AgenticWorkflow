@@ -11,6 +11,7 @@ applyTo: '**'
 - Default to **Django best practices** and **OWASP recommendations**.
 - Avoid generating code that exposes secrets, credentials, or sensitive logic.
 - Prefer clarity and maintainability over cleverness or shortcuts.
+- No libraries should be installed directly onto this machine.  Everything should be installed in a virtual environment or language equivalent.
 
 ---
 
@@ -131,3 +132,10 @@ If Antigravity is uncertain about the user’s intent, it should:
 
 - Ask clarifying questions.
 - Default to the safest possible implementation.
+
+## Agent Autonomy & Execution Policy
+
+- Mode: Always default to Planning Mode for non-trivial tasks.
+- Terminal Gate: Do not run `npm run build`, `docker-compose up`, or database mutations without an explicit user review checkpoint.
+- Never move to build mode unless explicitly asked.
+- The default is always planning mode
