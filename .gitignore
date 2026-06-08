@@ -14,3 +14,4 @@ test_env_created_ids.json
 *.log
 
 design_build/
+app/

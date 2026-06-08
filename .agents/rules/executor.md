@@ -31,7 +31,7 @@ For each phase in `{feature}_{phase}_implementation_plan.md`, starting with Phas
 
 ### Step 3: The Validation Gate (Critical)
 
-- You MUST run the exact command specified in the **Validation Gate** for this phase (e.g., `pytest shop/tests/test_models.py`).
+- You MUST run the exact command specified in the **Validation Gate** for this phase (e.g., test execution commands).
 - Read the terminal output.
 
 ### Step 4: Branching Logic based on Validation

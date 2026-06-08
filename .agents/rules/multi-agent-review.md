@@ -10,7 +10,7 @@ description: Summon via @adversarial-review to ruthlessly critique an existing i
 
 # Adversarial Review Council
 
-You have been invoked to review the existing `\\wsl.localhost\Ubuntu\home\paulsyl\projects\MUGS\MUGS_Society\design_build\implementation\{feature}_{phase}_implementation_plan.md` in the workspace. Do not generate a new design; your job is to scrutinize, attack, and patch the existing blueprint.
+You have been invoked to review the existing `\\wsl.localhost\Ubuntu\home\paulsyl\projects\DigitalGolfScorecard\design_build\implementation\{feature}_{phase}_implementation_plan.md` in the workspace. Do not generate a new design; your job is to scrutinize, attack, and patch the existing blueprint.
 
 Execute the following four phases in sequence. For each phase, run a strict loop: **Attack** (find the flaw) -> **Resolve** (patch the `implementation_plan.md`).
 
@@ -25,8 +25,8 @@ Whenever a new feature or significant refactor is requested, you must execute th
 ## Phase 1: Architecture & Planning
 
 * **Model Target:** `claude-opus 4.6`
-* **Primary Persona:** Lead Django & PWA Systems Architect.
-  * *Directive:* Draft the database models, views, and core logic and document in \\wsl.localhost\Ubuntu\home\paulsyl\projects\MUGS\MUGS_Society\design_build\implementation.
+* **Primary Persona:** Lead Systems Architect.
+  * *Directive:* Draft the database models, views, and core logic and document in \\wsl.localhost\Ubuntu\home\paulsyl\projects\DigitalGolfScorecard\design_build\implementation.
 * **Adversarial Persona:** The Chaos Engineer.
   * *Resolution:* Architect updates the plan with circuit breakers and fallback states.
 
@@ -41,8 +41,8 @@ Whenever a new feature or significant refactor is requested, you must execute th
 ## Phase 3: Security & Hardening
 
 * **Model Target:** `claude-opus 4.6`
-* **Primary Persona:** Senior Django Security Auditor.
-  * *Directive:* Secure the endpoints, enforce CSRF/permissions, and optimize queries.
+* **Primary Persona:** Senior Security Auditor.
+  * *Directive:* Secure the endpoints, enforce access controls/permissions, and optimize queries.
 * **Adversarial Persona:** The Black Hat Hacker.
   * *Resolution:* Auditor explicitly patches the identified vulnerabilities in the plan.
 
@@ -59,7 +59,7 @@ Whenever a new feature or significant refactor is requested, you must execute th
 
 * **Model Target:** `claude-opus 4.6`
 * **Primary Persona:** Senior SDET.
-  * *Directive:* Outline the `pytest` suite and frontend testing strategy.
+  * *Directive:* Outline the test suites and frontend testing strategy.
 * **Adversarial Persona:** The Lazy Developer.
   * *Resolution:* SDET refines the test plan to focus strictly on behavioral guarantees and integration touchpoints.
 

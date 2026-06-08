@@ -1,17 +1,17 @@
 ---
-description: This document defines how Antigravity should behave when assisting with this Django project. The goal is to ensure **secure**, **maintainable**, and **production‑ready** code while preventing unsafe or harmful patterns.
+description: This document defines how Antigravity should behave when assisting with this software project. The goal is to ensure **secure**, **maintainable**, and **production‑ready** code while preventing unsafe or harmful patterns.
 applyTo: '**'
 ---
 
-# Django Website Creation Instructions for Antigravity
+# Software Development Instructions for Antigravity
 
 ## Core Principles
 
 - Always prioritise **security**, **data protection**, and **privacy**.
-- Default to **Django best practices** and **OWASP recommendations**.
+- Default to **industry best practices** and **OWASP recommendations**.
 - Avoid generating code that exposes secrets, credentials, or sensitive logic.
 - Prefer clarity and maintainability over cleverness or shortcuts.
-- No libraries should be installed directly onto this machine.  Everything should be installed in a virtual environment or language equivalent.
+- No dependencies should be installed globally on this machine. Everything should be installed in a project-specific environment (e.g., virtual environment, node_modules).
 
 ---
 
@@ -20,47 +20,38 @@ applyTo: '**'
 ### 1. Secret Handling
 
 - Never hard‑code secrets, API keys, passwords, tokens, or database credentials.
-- Always use environment variables via `os.environ` or Django’s `settings`.
+- Always use environment variables or secure configuration management.
 - When generating examples, use placeholders like `"YOUR_SECRET_HERE"`.
 
-### 2. Django Settings Safety
+### 2. Configuration Safety
 
-Copilot must:
-
-- Default `DEBUG = False` unless explicitly asked otherwise.
-- Use secure defaults:
-  - `SECURE_HSTS_SECONDS = 31536000`
-  - `SECURE_SSL_REDIRECT = True`
-  - `SESSION_COOKIE_SECURE = True`
-  - `CSRF_COOKIE_SECURE = True`
-- Never suggest `ALLOWED_HOSTS = ["*"]`.
+- Default to secure configurations unless explicitly asked otherwise.
+- Never use wildcard origins (`*`) in CORS or allowed hosts unless strictly necessary and requested.
+- Ensure secure cookie settings (HttpOnly, Secure, SameSite) are used where applicable.
 
 ### 3. Authentication & Authorization
 
-- Use Django’s built‑in auth system unless explicitly instructed otherwise.
+- Use established authentication frameworks/libraries for the given tech stack unless explicitly instructed otherwise.
 - Never implement custom password hashing.
-- Encourage use of:
-  - `django.contrib.auth`
-  - `LoginRequiredMixin`
-  - `PermissionRequiredMixin`
+- Enforce least privilege principles.
 
 ### 4. Database Safety
 
 - Avoid raw SQL unless absolutely necessary.
-- When raw SQL is required, enforce parameterised queries.
-- Prefer Django ORM for all CRUD operations.
+- When raw SQL is required, enforce parameterised queries to prevent SQL injection.
+- Prefer using an ORM or query builder when available.
 
 ### 5. Input Validation
 
 - Always validate and sanitise user input.
-- Use Django Forms or DRF Serializers for validation.
-- Never trust request data directly.
+- Use established validation libraries appropriate for the stack.
+- Never trust client-provided data directly.
 
 ### 6. File Upload Safety
 
 - Validate file types and sizes.
-- Never store uploaded files in the project root.
-- Use Django’s `FileField` or `ImageField` with safe storage backends.
+- Never store uploaded files directly in public web roots without sanitation.
+- Use secure storage backends.
 
 ---
 
@@ -68,27 +59,18 @@ Copilot must:
 
 ### 1. Project Structure
 
-Copilot should follow Django’s recommended structure:
+- Follow the recommended structure and conventions for the chosen framework/language.
+- Keep the codebase modular and separate concerns logically.
 
-- Separate apps by domain.
-- Use `templates/<app_name>/...`
-- Use `static/<app_name>/...`
+### 2. Design Patterns
 
-### 2. Views
+- Prefer established design patterns over ad-hoc solutions.
+- Ensure code is modular, reusable, and loosely coupled.
 
-- Prefer class‑based views over function‑based views.
-- Use `ListView`, `DetailView`, `CreateView`, etc., when appropriate.
+### 3. Dependencies
 
-### 3. URLs
-
-- Use `path()` instead of `url()`.
-- Namespace all app URLs.
-
-### 4. Models
-
-- Use explicit `related_name` for relationships.
-- Avoid circular imports.
-- Use `__str__` methods for readability.
+- Use stable, maintained, and secure dependencies.
+- Avoid introducing unnecessary third-party packages.
 
 ---
 
@@ -96,21 +78,20 @@ Copilot should follow Django’s recommended structure:
 
 Antigravity must:
 
-- Generate tests for new features.
-- Use Django’s `TestCase` or DRF’s `APITestCase`.
+- Generate unit and integration tests for new features.
+- Use the standard testing framework for the specific language/stack.
 - Include tests for:
-  - Permissions
-  - Validation
-  - Model behaviour
-  - Security‑sensitive logic
+  - Core business logic
+  - Edge cases and validation
+  - Security‑sensitive operations
 
 ---
 
 ## Documentation Requirements
 
-- Every generated module must include docstrings.
-- Complex logic must include inline comments.
-- Copilot should generate README updates when adding major features.
+- Every significant module, function, or class must include appropriate documentation (e.g., docstrings, JSDoc).
+- Complex logic must include inline comments explaining *why* something is done, not just *what*.
+- Generate README updates when adding major features.
 
 ---
 
@@ -119,8 +100,8 @@ Antigravity must:
 Antigravity must **never**:
 
 - Generate insecure code.
-- Suggest disabling security middleware.
-- Expose stack traces or internal errors.
+- Suggest disabling security middleware or checks.
+- Expose stack traces or internal errors to end users.
 - Produce harmful, abusive, or discriminatory content.
 - Generate code that violates privacy or data‑protection laws.
 
@@ -136,6 +117,6 @@ If Antigravity is uncertain about the user’s intent, it should:
 ## Agent Autonomy & Execution Policy
 
 - Mode: Always default to Planning Mode for non-trivial tasks.
-- Terminal Gate: Do not run `npm run build`, `docker-compose up`, or database mutations without an explicit user review checkpoint.
+- Terminal Gate: Do not run build commands, infrastructure provisioning, or database mutations without an explicit user review checkpoint.
 - Never move to build mode unless explicitly asked.
-- The default is always planning mode
+- The default is always planning mode.
