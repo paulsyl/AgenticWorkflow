@@ -1,0 +1,19 @@
+{
+  "name": "phased-implementation-executor",
+  "version": "1.0.0",
+  "description": "Custom agent rules and python automation scripts for strict phase-by-phase implementation, validation, and rollback workflows.",
+  "author": {
+    "name": "Antigravity Assistant"
+  },
+  "rules": [
+    "rules/executor.md",
+    "rules/architect.md",
+    "rules/multi-agent-review.md"
+  ],
+  "skills": {
+    "parse_plan": "skills/parse_plan.py",
+    "execute_validation": "skills/execute_validation.py",
+    "rollback_workspace": "skills/rollback_workspace.py",
+    "update_status": "skills/update_status.py"
+  }
+}
