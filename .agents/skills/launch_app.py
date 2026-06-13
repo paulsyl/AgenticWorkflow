@@ -16,8 +16,13 @@ def main():
     try:
         # Open a log file for mock server output
         log_file = open(os.path.join(workspace_dir, "mock-server.log"), "w")
+        
+        # Source NVM if available to get the correct Node version
+        nvm_cmd = ". ~/.nvm/nvm.sh && " if os.path.exists(os.path.expanduser("~/.nvm/nvm.sh")) else ""
+        mock_cmd = f"{nvm_cmd}npm run dev"
+        
         mock_process = subprocess.Popen(
-            ["npm", "run", "dev"],
+            ["bash", "-c", mock_cmd],
             cwd=mock_server_dir,
             stdout=log_file,
             stderr=log_file,
@@ -36,8 +41,9 @@ def main():
     print("👉 Launching Expo Application...")
     expo_process = None
     try:
+        expo_cmd = f"{nvm_cmd}npm run start"
         expo_process = subprocess.Popen(
-            ["npm", "run", "start"],
+            ["bash", "-c", expo_cmd],
             cwd=workspace_dir
         )
         
