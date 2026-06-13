@@ -14,6 +14,7 @@
     "parse_plan": "skills/parse_plan.py",
     "execute_validation": "skills/execute_validation.py",
     "rollback_workspace": "skills/rollback_workspace.py",
-    "update_status": "skills/update_status.py"
+    "update_status": "skills/update_status.py",
+    "launch_app": "skills/launch_app.py"
   }
 }
