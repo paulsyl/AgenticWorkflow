@@ -1,0 +1,20 @@
+{
+  "name": "ponytail",
+  "version": "4.7.0",
+  "description": "Lazy senior dev mode. Forces the simplest, shortest solution that actually works: YAGNI, stdlib first, no unrequested abstractions.",
+  "author": {
+    "name": "Dietrich Gebert"
+  },
+  "rules": [
+    "rules/ponytail.md",
+    "rules/AGENTS.md"
+  ],
+  "skills": {
+    "ponytail": "skills/ponytail/SKILL.md",
+    "ponytail-audit": "skills/ponytail-audit/SKILL.md",
+    "ponytail-debt": "skills/ponytail-debt/SKILL.md",
+    "ponytail-gain": "skills/ponytail-gain/SKILL.md",
+    "ponytail-help": "skills/ponytail-help/SKILL.md",
+    "ponytail-review": "skills/ponytail-review/SKILL.md"
+  }
+}

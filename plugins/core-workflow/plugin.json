@@ -1,5 +1,5 @@
 {
-  "name": "phased-implementation-executor",
+  "name": "core-workflow",
   "version": "1.0.0",
   "description": "Custom agent rules and python automation scripts for strict phase-by-phase implementation, validation, and rollback workflows.",
   "author": {
@@ -15,6 +15,7 @@
     "execute_validation": "skills/execute_validation.py",
     "rollback_workspace": "skills/rollback_workspace.py",
     "update_status": "skills/update_status.py",
-    "launch_app": "skills/launch_app.py"
+    "launch_app": "skills/launch_app.py",
+    "fastcontext": "skills/fastcontext.md"
   }
 }

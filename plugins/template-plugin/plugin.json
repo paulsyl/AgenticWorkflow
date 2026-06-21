@@ -1,0 +1,11 @@
+{
+  "name": "template-plugin",
+  "version": "1.0.0",
+  "description": "A boilerplate plugin template to help you quickly bootstrap new global agents and skills.",
+  "author": {
+    "name": "Antigravity Assistant"
+  },
+  "rules": [],
+  "skills": {},
+  "agents": {}
+}
