@@ -8,7 +8,8 @@
   "rules": [
     "rules/executor.md",
     "rules/architect.md",
-    "rules/multi-agent-review.md"
+    "rules/multi-agent-review.md",
+    "rules/orchestrator.md"
   ],
   "skills": {
     "parse_plan": "skills/parse_plan.py",

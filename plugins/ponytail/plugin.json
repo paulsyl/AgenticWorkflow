@@ -1,9 +1,9 @@
 {
   "name": "ponytail",
   "version": "4.7.0",
-  "description": "Lazy senior dev mode. Forces the simplest, shortest solution that actually works: YAGNI, stdlib first, no unrequested abstractions.",
+  "description": "Forces the simplest, shortest solution that actually works: YAGNI, stdlib first, no unrequested abstractions.",
   "author": {
-    "name": "Dietrich Gebert"
+    "name": "Paul Sylvester"
   },
   "rules": [
     "rules/ponytail.md",

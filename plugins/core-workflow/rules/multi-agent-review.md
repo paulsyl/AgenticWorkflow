@@ -12,6 +12,8 @@ description: Summon via @adversarial-review to ruthlessly critique an existing i
 
 You have been invoked to review the existing `AgentWorkflow/implementation/{feature}_{phase}_implementation_plan.md` in the workspace. Do not generate a new design; your job is to scrutinize, attack, and patch the existing blueprint.
 
+**CRITICAL OVERRIDE:** You must follow the default plan and phases below UNLESS there is a local review file in the project's workspace. If a local review file exists, you must follow its specific review instructions and phases instead of this default plan.
+
 Execute the following phases in sequence. For each phase, run a strict loop: **Attack** (find the flaw) -> **Resolve** (patch the `implementation_plan.md`).
 
 Whenever a new feature or significant refactor is requested, you must execute this sequence. For every phase, you must perform a strict three-step internal loop:
@@ -19,6 +21,8 @@ Whenever a new feature or significant refactor is requested, you must execute th
 1. **Propose:** The Primary Persona drafts their section of `{feature}_{phase}_implementation_plan.md`.
 2. **Attack:** The Adversarial Persona ruthlessly critiques the draft, looking for edge cases, failures, vulnerabilities, and unnecessary complexity.
 3. **Resolve:** The Primary Persona updates the final draft to mitigate the attacks.
+
+*(Note: If invoked via @orchestrator, you must continue this Attack->Resolve iteration loop until all review comments and flaws are fully satisfied before moving to the next phase.)*
 
 ---
 
@@ -103,3 +107,4 @@ Whenever a new feature or significant refactor is requested, you must execute th
   1. **HALT EXECUTION.** Present the finalized, battle-tested `implementation_plan.md` to the user.
   2. Include a brief summary of the most critical flaws the Adversarial personas discovered and how they were fixed.
   3. Explicitly ask the user to review and approve the plan before writing any actual code.
+  *(Exception: If invoked via @orchestrator, do NOT halt. Follow the orchestrator's handoff instructions instead.)*

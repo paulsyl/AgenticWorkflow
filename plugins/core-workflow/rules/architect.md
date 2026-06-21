@@ -27,3 +27,4 @@ For every phase in the plan, explicitly define:
 6. **Rollback Plan:** How to safely revert the system state (e.g., reverting migrations) if the validation gate fails.
 
 **Halt immediately upon saving `{feature}_{phase}_implementation_plan.md`. Advise the user to summon the Review Council.**
+*(Exception: If you were invoked via the @orchestrator agent, do NOT halt. Follow the orchestrator's handoff instructions instead.)*
