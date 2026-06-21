@@ -1,6 +1,45 @@
-# Antigravity Agent Configuration
+# Core Workflow Plugin
 
-This directory contains customizations, rules, and skills for the Antigravity agent in this project.
+This plugin provides the foundational rule set and automation skills for deterministic, phase-by-phase feature implementation in Antigravity. It forces the agent into specialized personas to ensure code is thoughtfully designed, rigorously reviewed, and strictly executed.
+
+## The Workflow
+
+The core workflow relies on three distinct agent personas operating in a strict sequence:
+
+```mermaid
+flowchart TD
+    Start([User Request]) --> Architect[fa:fa-user-tie @architect]
+    Architect --> |Explores Codebase| PlanDraft[Draft implementation_plan.md]
+    
+    PlanDraft --> Review[fa:fa-users @adversarial-review]
+    Review <--> |Attack & Resolve Loop| PlanDraft
+    
+    Review --> |Council Approves| HumanGate{Human Approval?}
+    HumanGate -- Rejected --> Architect
+    HumanGate -- Approved --> Executor[fa:fa-cogs @executor]
+    
+    subgraph Execution Loop
+        Executor --> |Reads Phase| Code[Writes Code]
+        Code --> Validate[Run validation tests]
+        Validate -- Pass --> Status[Update Status to Complete]
+        Status --> NextPhase{More Phases?}
+        NextPhase -- Yes --> Executor
+        
+        Validate -- Fail --> Fix[Attempt Fix Once]
+        Fix --> Validate2[Run validation tests]
+        Validate2 -- Pass --> Status
+        Validate2 -- Fail --> Rollback[fa:fa-undo Rollback Workspace]
+        Rollback --> Halt([Halt & Notify User])
+    end
+    
+    NextPhase -- No --> Finish([All Phases Complete])
+```
+
+1. **The Architect (`@architect`)**: Researches the existing codebase and writes a strict, phased `implementation_plan.md` that dictates exactly how the feature will be built.
+2. **The Adversarial Council (`@adversarial-review`)**: A suite of 8 distinct personas (e.g. Chaos Engineer, Security Auditor, Pragmatist) that ruthlessly critique and attack the Architect's plan before any code is written.
+3. **The Executor (`@executor`)**: Reads the approved plan and implements it phase-by-phase. It relies on the custom automation scripts in the `skills` directory to strictly enforce validation gates and workspace rollbacks on failure.
+
+---
 
 ## Setup Instructions for Other Projects
 
