@@ -64,12 +64,12 @@ for file in "$REPO_ROOT/copilot-instructions.md" "$REPO_ROOT/AGENTS.md"; do
     fi
 done
 
-# Copy .antigravityignore if not customized
-if [ ! -f "$PROJECT_ROOT/.antigravityignore" ] || grep -q "Global ignore patterns" "$PROJECT_ROOT/.antigravityignore"; then
-    cp "$REPO_ROOT/.antigravityignore" "$PROJECT_ROOT/.antigravityignore"
-    echo "  ✅ Updated: .antigravityignore"
+# Copy .copilotignore if not customized
+if [ ! -f "$PROJECT_ROOT/.copilotignore" ] || grep -q "Global ignore patterns" "$PROJECT_ROOT/.copilotignore"; then
+    cp "$REPO_ROOT/.copilotignore" "$PROJECT_ROOT/.copilotignore"
+    echo "  ✅ Updated: .copilotignore"
 else
-    echo "  ⏭️  Skipped: .antigravityignore (customized locally)"
+    echo "  ⏭️  Skipped: .copilotignore (customized locally)"
 fi
 
 echo ""

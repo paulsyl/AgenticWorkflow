@@ -388,7 +388,7 @@ git commit -m "Add custom agents for project"
 
 Files in user's Copilot prompts directory are available everywhere.
 
-**Location**: `~/Library/Application Support/Code/User/prompts/copilot-antigravity/`
+**Location**: `~/Library/Application Support/Code/User/prompts/copilot/`
 
 **Pros**:
 - ✅ Available in all projects (no duplication)

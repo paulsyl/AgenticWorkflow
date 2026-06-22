@@ -200,7 +200,7 @@ AgenticWorkflow/
 ├── scripts/
 │   ├── install-global.sh                # Global installation
 │   └── sync-workspace.sh                # Workspace sync
-├── .antigravityignore                   # Global ignore patterns
+├── .copilotignore                       # Global ignore patterns for Copilot
 ├── copilot-instructions.md              # Root-level defaults
 ├── AGENTS.md                            # Agent quick reference
 └── README.md                            # This file
@@ -219,7 +219,7 @@ cd /Users/paul_sylvester/Development/AgenticWorkflow
 ./scripts/install-global.sh
 ```
 
-Agents are installed to: `~/Library/Application Support/Code/User/prompts/copilot-antigravity/`
+Agents are installed to: `~/Library/Application Support/Code/User/prompts/copilot/`
 
 ✅ **Pros**: Cross-project reuse, automatic updates via symlinks
 ❌ **Cons**: Requires explicit global setup
