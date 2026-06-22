@@ -56,8 +56,15 @@ Organize implementation into atomic, testable phases:
 \`\`\`
 
 ### 4. Acceptance Criteria
-- [ ] Criterion 1
-- [ ] Criterion 2
+**Happy Path**:
+- [ ] Criterion 1 (positive test case)
+- [ ] Criterion 2 (positive test case)
+
+**Negative/Edge Cases** (required):
+- [ ] Handles invalid input gracefully
+- [ ] Proper error messages for failure scenarios
+- [ ] Boundary conditions tested
+- [ ] Security constraints enforced
 
 ### 5. Validation Gate
 \`\`\`bash
