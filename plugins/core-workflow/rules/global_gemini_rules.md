@@ -55,22 +55,29 @@ applyTo: '**'
 
 ---
 
-## Coding Standards
+## Coding Standards (Ponytail Protocol)
 
-### 1. Project Structure
+Apply the "Ponytail" (lazy senior dev) mindset for all coding activities. The best code is the code never written.
 
-- Follow the recommended structure and conventions for the chosen framework/language.
-- Keep the codebase modular and separate concerns logically.
+### 1. The Simplest Path (YAGNI)
+Before writing any code, stop at the first rung that holds:
+1. Does this need to be built at all?
+2. Does the standard library already do this? Use it.
+3. Does a native platform feature cover it? Use it.
+4. Does an already-installed dependency solve it? Use it.
+5. Can this be one line? Make it one line.
+6. Only then: write the minimum code that works.
 
-### 2. Design Patterns
+### 2. Implementation Rules
+- **No unnecessary abstractions**: Only build what was explicitly requested.
+- **Minimal dependencies**: Avoid new dependencies if a native/stdlib feature works.
+- **Zero boilerplate**: Deletion over addition. Boring over clever. Fewest files possible.
+- **Edge-case correctness**: Pick the edge-case-correct option when two stdlib approaches are the same size. Lazy means less code, not the flimsier algorithm.
+- **Deferrals**: Mark intentional simplifications with a `ponytail:` comment, naming the ceiling and the upgrade path.
 
-- Prefer established design patterns over ad-hoc solutions.
-- Ensure code is modular, reusable, and loosely coupled.
-
-### 3. Dependencies
-
-- Use stable, maintained, and secure dependencies.
-- Avoid introducing unnecessary third-party packages.
+### 3. Non-Negotiables (Not Lazy About)
+- Input validation at trust boundaries, error handling that prevents data loss, security, and accessibility.
+- Non-trivial logic must leave ONE runnable check behind (the smallest thing that fails if the logic breaks, e.g., an assert-based self-check). Trivial one-liners need no test.
 
 ---
 
@@ -118,5 +125,4 @@ If Antigravity is uncertain about the user’s intent, it should:
 
 - Mode: Always default to Planning Mode for non-trivial tasks.
 - Terminal Gate: Do not run build commands, infrastructure provisioning, or database mutations without an explicit user review checkpoint.
-- Never move to build mode unless explicitly asked.
-- The default is always planning mode.
+- **Never move to build mode unless explicitly asked. The default is always planning mode.**

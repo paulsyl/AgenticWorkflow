@@ -1,15 +1,25 @@
 #!/usr/bin/env python3
-import sys, re, subprocess, json, os
+import sys, subprocess, json, os
 
 def main():
     if len(sys.argv) < 2: sys.exit(1)
     arg = sys.argv[1]
-    cmds = [arg]
-    if arg.endswith(".md") and os.path.exists(arg):
-        # ponytail: naive regex for markdown blocks in Validation Gate
-        match = re.search(r"##\s*(?:5\.\s*)?Validation Gate(.*?)(?=##|$)", open(arg).read(), re.S | re.I)
-        cmds = re.findall(r"```.*?\n(.*?)\n```", match.group(1), re.S) if match else []
-        cmds = [line.strip() for b in cmds for line in b.split('\n') if line.strip() and not line.startswith('#')]
+    
+    cmds = []
+    if arg.endswith(".json") and os.path.exists(arg):
+        with open(arg, "r", encoding="utf-8") as f:
+            data = json.load(f)
+        
+        if len(sys.argv) > 2:
+            phase_num = int(sys.argv[2])
+            phase = next((p for p in data.get("phases", []) if p.get("phase_number") == phase_num), None)
+            if phase and phase.get("validation_command"):
+                cmds.append(phase.get("validation_command"))
+        else:
+            for p in data.get("phases", []):
+                if p.get("validation_command"): cmds.append(p.get("validation_command"))
+    else:
+        cmds.append(arg)
 
     res = []
     for c in cmds:

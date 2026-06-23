@@ -9,14 +9,14 @@
     "rules/executor.md",
     "rules/architect.md",
     "rules/multi-agent-review.md",
-    "rules/orchestrator.md"
+    "rules/orchestrator.md",
+    "rules/specifier.md"
   ],
   "skills": {
     "parse_plan": "skills/parse_plan.py",
     "execute_validation": "skills/execute_validation.py",
     "rollback_workspace": "skills/rollback_workspace.py",
     "update_status": "skills/update_status.py",
-    "launch_app": "skills/launch_app.py",
-    "fastcontext": "skills/fastcontext.md"
+    "launch_app": "skills/launch_app.py"
   }
 }

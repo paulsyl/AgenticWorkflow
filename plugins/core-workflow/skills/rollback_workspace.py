@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import sys, os, re, subprocess, json
+import sys, os, subprocess, json
 
 def run(cmd):
     print(f"Executing: {cmd}")
@@ -8,10 +8,18 @@ def run(cmd):
 
 def main():
     cmds = []
-    if len(sys.argv) > 1 and sys.argv[1].endswith(".md") and os.path.exists(sys.argv[1]):
-        match = re.search(r"##\s*(?:6\.\s*)?Rollback Plan(.*?)(?=##|$)", open(sys.argv[1]).read(), re.S | re.I)
-        blocks = re.findall(r"```.*?\n(.*?)\n```", match.group(1), re.S) if match else []
-        cmds = [line.strip() for b in blocks for line in b.split('\n') if line.strip() and not line.startswith('#')]
+    if len(sys.argv) > 1 and sys.argv[1].endswith(".json") and os.path.exists(sys.argv[1]):
+        with open(sys.argv[1], "r", encoding="utf-8") as f:
+            data = json.load(f)
+        
+        if len(sys.argv) > 2:
+            phase_num = int(sys.argv[2])
+            phase = next((p for p in data.get("phases", []) if p.get("phase_number") == phase_num), None)
+            if phase and phase.get("rollback_command"):
+                cmds.append(phase.get("rollback_command"))
+        else:
+            for p in data.get("phases", []):
+                if p.get("rollback_command"): cmds.append(p.get("rollback_command"))
 
     res = [run(c) for c in cmds] + [run("git reset --hard HEAD"), run("git clean -fd")]
     success = all(r["success"] for r in res)
