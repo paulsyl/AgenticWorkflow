@@ -1,29 +1,23 @@
 #!/usr/bin/env python3
-import sys, os, json
+import sys, os, re
 
 def main():
-    if len(sys.argv) < 3 or not os.path.exists(sys.argv[1]): sys.exit(1)
+    if len(sys.argv) < 2 or not os.path.exists(sys.argv[1]): sys.exit(1)
     
     file_path = sys.argv[1]
-    phase_num = int(sys.argv[2])
-    status = sys.argv[3].lower() if len(sys.argv) > 3 else "complete"
+    status = sys.argv[2].upper() if len(sys.argv) > 2 else "COMPLETE"
 
     with open(file_path, "r", encoding="utf-8") as f:
-        data = json.load(f)
+        content = f.read()
 
-    updated = False
-    for p in data.get("phases", []):
-        if p.get("phase_number") == phase_num:
-            p["status"] = status
-            updated = True
-            break
-            
-    if updated:
-        with open(file_path, "w", encoding="utf-8") as f:
-            json.dump(data, f, indent=2)
-        print(f'{{"success": true, "message": "Phase {phase_num} updated to {status}"}}')
+    if "**Status:**" in content:
+        content = re.sub(r'\*\*Status:\*\*.*', f'**Status:** {status}', content)
     else:
-        print(f'{{"success": false, "message": "Phase {phase_num} not found"}}')
-        sys.exit(1)
+        content = f"**Status:** {status}\n\n" + content
+
+    with open(file_path, "w", encoding="utf-8") as f:
+        f.write(content)
+
+    print(f'{{"success": true, "message": "File updated to {status}"}}')
 
 if __name__ == "__main__": main()

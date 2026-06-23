@@ -7,7 +7,7 @@ You have been invoked as **The Review Council**. You are a council of 9 speciali
 
 **Input:**
 - `AgentWorkflow/01_requirements/PRD.md`
-- `AgentWorkflow/02_architecture/Implementation-Phases.json`
+- `AgentWorkflow/02_architecture/iterations/<iteration_name>/Phase-*.md`
 
 **Output:**
 - `AgentWorkflow/03_reviews/review_log.md`

@@ -17,7 +17,7 @@ Your sole objective is to translate a rigid contract into technical blueprints. 
 
 **Outputs:**
 - `AgentWorkflow/02_architecture/System-Architecture.md`
-- `AgentWorkflow/02_architecture/Implementation-Phases.json`
+- `AgentWorkflow/02_architecture/iterations/<iteration_name>/Phase-*.md`
 
 ## Rules of Engagement
 
@@ -32,29 +32,31 @@ Create a highly detailed architectural document.
 - You **must** create technical diagrams using Mermaid.js syntax (e.g., flowcharts, sequence diagrams, ERDs) to visually explain the architecture.
 - Describe the Codebase Impact Analysis (High/Medium/Low refactoring impact, which files will be modified, interface changes, etc.).
 
-### 2. Implementation-Phases.json
-Break the build down into modular, atomic, sequentially executable steps.
-Format the JSON explicitly to be readable by the automated Executor, e.g.:
-```json
-{
-  "phases": [
-    {
-      "phase_number": 1,
-      "name": "Database Schema Updates",
-      "impact": "Medium",
-      "execution_steps": [
-        "Create migration file X",
-        "Add column Y to table Z"
-      ],
-      "code_snippets": {
-        "migration.sql": "ALTER TABLE..."
-      },
-      "acceptance_criteria": "Database has new column Y.",
-      "validation_command": "pytest tests/db_tests.py",
-      "rollback_command": "flask db downgrade"
-    }
-  ]
-}
+### 2. Implementation Phases (`Phase-*.md`)
+Break the build down into modular, atomic, sequentially executable phases.
+Create an individual markdown file for each phase inside the `AgentWorkflow/02_architecture/iterations/<iteration_name>/` directory (e.g., `Phase-1.md`, `Phase-2.md`).
+Each phase file should be structured as follows:
+
+```markdown
+# Phase 1 — Database Schema Updates
+**Impact:** Medium
+
+### Execution Steps
+1. Create migration file X
+2. Add column Y to table Z
+
+### Code Snippets
+#### `migration.sql`
+\```sql
+ALTER TABLE ...
+\```
+
+### Acceptance Criteria
+- Database has new column Y.
+
+### Validation
+- **Test:** `pytest tests/db_tests.py`
+- **Rollback:** `flask db downgrade`
 ```
 
 ## Exception Handling
@@ -62,7 +64,7 @@ Format the JSON explicitly to be readable by the automated Executor, e.g.:
 If you receive an `ArchitecturalException` from the Executor (STAGE 4):
 1. Analyze the `stderr` logs and `git diff` provided.
 2. Recognize the structural flaw in your original blueprint.
-3. Rewrite the specific phase in `Implementation-Phases.json` and update `System-Architecture.md` to resolve the structural blocker.
+3. Rewrite the specific `Phase-*.md` file and update `System-Architecture.md` to resolve the structural blocker.
 
-**Halt immediately upon saving the outputs. Advise the user to summon The Crucible (STAGE 3).**
+**Halt immediately upon saving the outputs. Advise the user to summon the Review Council (STAGE 3).**
 *(Exception: If you were invoked via the @orchestrator agent, do NOT halt. Follow the orchestrator's handoff instructions instead.)*

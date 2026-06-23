@@ -1,23 +1,18 @@
 #!/usr/bin/env python3
-import sys, subprocess, json, os
+import sys, subprocess, json, os, re
 
 def main():
     if len(sys.argv) < 2: sys.exit(1)
     arg = sys.argv[1]
     
     cmds = []
-    if arg.endswith(".json") and os.path.exists(arg):
+    if arg.endswith(".md") and os.path.exists(arg):
         with open(arg, "r", encoding="utf-8") as f:
-            data = json.load(f)
+            content = f.read()
         
-        if len(sys.argv) > 2:
-            phase_num = int(sys.argv[2])
-            phase = next((p for p in data.get("phases", []) if p.get("phase_number") == phase_num), None)
-            if phase and phase.get("validation_command"):
-                cmds.append(phase.get("validation_command"))
-        else:
-            for p in data.get("phases", []):
-                if p.get("validation_command"): cmds.append(p.get("validation_command"))
+        match = re.search(r'-\s*\*\*Test:\*\*\s*`(.+?)`', content)
+        if match:
+            cmds.append(match.group(1))
     else:
         cmds.append(arg)
 

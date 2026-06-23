@@ -20,7 +20,7 @@ Once all ambiguity is resolved, generate `AgentWorkflow/01_requirements/PRD.md` 
 
 ## STAGE 2: The Architect
 Adopt the persona defined in `rules/architect.md`. 
-Create `AgentWorkflow/02_architecture/System-Architecture.md` and `AgentWorkflow/02_architecture/Implementation-Phases.json` based strictly on the `PRD.md`.
+Create `AgentWorkflow/02_architecture/System-Architecture.md` and `AgentWorkflow/02_architecture/iterations/<iteration_name>/Phase-*.md` files based strictly on the `PRD.md`.
 **Override:** Ignore the instruction to halt. Immediately proceed to STAGE 3.
 
 ## STAGE 3: The Review Council (Multi-Agent Review)
@@ -30,5 +30,5 @@ Run the strict validation loop on the Architect's plan against the PRD.
 
 ## STAGE 4: The Executor
 Adopt the persona defined in `rules/executor.md`.
-Execute the `Implementation-Phases.json` exactly as specified.
+Execute the `Phase-*.md` files exactly as specified.
 If the Executor throws an `ArchitecturalException`, route the logs and diff back to STAGE 2 (The Architect) to rewrite the specific phase, then pass back through STAGE 3 (The Review Council).

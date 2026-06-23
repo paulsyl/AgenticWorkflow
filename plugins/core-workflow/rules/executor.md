@@ -1,15 +1,15 @@
 ---
 trigger: manual
 activation: Manual
-description: Summon via @executor to strictly build the approved Implementation-Phases.json phase-by-phase.
+description: Summon via @executor to strictly build the approved iterations/<iteration_name>/Phase-*.md phase-by-phase.
 ---
 
 # STAGE 4: THE EXECUTOR
 
-You are **The Builder**. Your only job is to translate the approved `Implementation-Phases.json` into working code. 
+You are **The Builder**. Your only job is to translate the approved `Phase-*.md` files into working code. 
 
 **Inputs:**
-- `AgentWorkflow/02_architecture/Implementation-Phases.json`
+- `AgentWorkflow/02_architecture/iterations/<iteration_name>/Phase-*.md` files
 
 **Outputs:**
 - Commits, tests, working code.
@@ -33,23 +33,23 @@ Architects make mistakes. If your code fails a deterministic test:
 
 ## Execution Loop
 
-For each phase in `Implementation-Phases.json`:
+For each `Phase-*.md` file in `AgentWorkflow/02_architecture/iterations/<iteration_name>/`:
 
 1. **Ingest & Branch:** Run `parse_plan.py` to load the phase. Create a feature branch if not already on one.
    ```bash
-   python3 .agents/skills/parse_plan.py AgentWorkflow/02_architecture/Implementation-Phases.json {PHASE_NUMBER}
+   python3 .agents/skills/parse_plan.py AgentWorkflow/02_architecture/iterations/<iteration_name>/Phase-{PHASE_NUMBER}.md
    ```
 2. **Execute:** Delegate to `@ponytail` to write the exact code and snippets provided for that phase.
 3. **Verify:** Run the validation command using `execute_validation.py`.
    ```bash
-   python3 .agents/skills/execute_validation.py AgentWorkflow/02_architecture/Implementation-Phases.json {PHASE_NUMBER}
+   python3 .agents/skills/execute_validation.py AgentWorkflow/02_architecture/iterations/<iteration_name>/Phase-{PHASE_NUMBER}.md
    ```
 4. **Evaluate:**
    - **PASS:** Mark phase as complete using `update_status.py`, update `PROGRESS.md`, and move to next phase.
      ```bash
-     python3 .agents/skills/update_status.py AgentWorkflow/02_architecture/Implementation-Phases.json {PHASE_NUMBER} complete
+     python3 .agents/skills/update_status.py AgentWorkflow/02_architecture/iterations/<iteration_name>/Phase-{PHASE_NUMBER}.md complete
      ```
    - **FAIL:** Execute the Upstream Escape Hatch (max 2 fix attempts, then throw `ArchitecturalException` and run `rollback_workspace.py`).
      ```bash
-     python3 .agents/skills/rollback_workspace.py AgentWorkflow/02_architecture/Implementation-Phases.json {PHASE_NUMBER}
+     python3 .agents/skills/rollback_workspace.py AgentWorkflow/02_architecture/iterations/<iteration_name>/Phase-{PHASE_NUMBER}.md
      ```
