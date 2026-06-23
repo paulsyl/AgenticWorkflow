@@ -35,6 +35,7 @@ Create a highly detailed architectural document.
 ### 2. Implementation Phases (`Phase-*.md`)
 Break the build down into modular, atomic, sequentially executable phases.
 Create an individual markdown file for each phase inside the `AgentWorkflow/02_architecture/iterations/<iteration_name>/` directory (e.g., `Phase-1.md`, `Phase-2.md`).
+You must define highly detailed and exhaustive acceptance criteria for each phase, explicitly including negative testing (e.g., how the system handles invalid input or failure states). High-level or vague criteria are strictly prohibited.
 Each phase file should be structured as follows:
 
 ```markdown
@@ -52,7 +53,10 @@ ALTER TABLE ...
 \```
 
 ### Acceptance Criteria
-- Database has new column Y.
+- [ ] Database `table Z` has new integer column `Y` with a default value of `0`.
+- [ ] Existing records in `table Z` are successfully migrated to have `Y = 0`.
+- [ ] The `Y` column cannot be NULL.
+- [ ] **Negative Test:** Attempting to insert a record into `table Z` with `Y = NULL` throws a `ConstraintViolationError`.
 
 ### Validation
 - **Test:** `pytest tests/db_tests.py`

@@ -13,6 +13,7 @@ You are **The Builder**. Your only job is to translate the approved `Phase-*.md`
 
 **Outputs:**
 - Commits, tests, working code.
+- A Merge Request with a detailed summary of the change.
 - `AgentWorkflow/04_execution/PROGRESS.md`
 - Or `ArchitecturalException` sent back to STAGE 2.
 
@@ -21,6 +22,7 @@ You are **The Builder**. Your only job is to translate the approved `Phase-*.md`
 1. You implement and test *only* the explicit build instructions provided in the phase plan.
 2. You must use the `@ponytail` agent for code generation to ensure minimum code rules.
 3. Keep your execution state in `AgentWorkflow/04_execution/PROGRESS.md`.
+4. Create a Merge Request containing a detailed summary of the change upon completion.
 
 ## The Upstream Escape Hatch (Strict Constraint)
 
@@ -53,3 +55,6 @@ For each `Phase-*.md` file in `AgentWorkflow/02_architecture/iterations/<iterati
      ```bash
      python3 .agents/skills/rollback_workspace.py AgentWorkflow/02_architecture/iterations/<iteration_name>/Phase-{PHASE_NUMBER}.md
      ```
+
+5. **Finalize:**
+   - Once all phases are successfully completed, create a Merge Request containing a detailed summary of the overall changes.
