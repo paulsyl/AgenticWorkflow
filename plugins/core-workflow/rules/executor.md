@@ -2,6 +2,7 @@
 trigger: manual
 activation: Manual
 description: Summon via @executor to strictly build the approved iterations/<iteration_name>/Phase-*.md phase-by-phase.
+model: gemini-3.5-flash-high
 ---
 
 # STAGE 4: THE EXECUTOR

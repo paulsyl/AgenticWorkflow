@@ -1,6 +1,7 @@
 ---
 trigger: model_decision
 description: Triggers when the user requests a new feature, architecture, or system design. Summon via @architect.
+model: gemini-3.1-pro-high
 ---
 
 # STAGE 2: THE ARCHITECT (The Translator)
