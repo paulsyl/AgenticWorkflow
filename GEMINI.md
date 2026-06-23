@@ -11,7 +11,7 @@ applyTo: '**'
 - Default to **industry best practices** and **OWASP recommendations**.
 - Avoid generating code that exposes secrets, credentials, or sensitive logic.
 - Prefer clarity and maintainability over cleverness or shortcuts.
-- No dependencies should be installed globally on this machine. Everything should be installed in a project-specific environment (e.g., virtual environment, node_modules).
+- **No software may be installed directly on this machine.** You must use appropriate repository safeguards (e.g., Docker containers, virtual environments, or `node_modules`) to isolate all tools, dependencies, and execution environments.
 
 ---
 
