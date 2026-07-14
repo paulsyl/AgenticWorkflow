@@ -10,7 +10,11 @@
     "rules/architect.md",
     "rules/multi-agent-review.md",
     "rules/orchestrator.md",
-    "rules/specifier.md"
+    "rules/specifier.md",
+    "rules/QA_Orchestrator.md",
+    "rules/QA_Architect.md",
+    "rules/QA_Execution.md",
+    "rules/QA_Analyzer.md"
   ],
   "skills": {
     "parse_plan": "skills/parse_plan.py",
