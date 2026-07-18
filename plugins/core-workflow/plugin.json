@@ -1,26 +1,21 @@
 {
   "name": "core-workflow",
-  "version": "1.0.0",
-  "description": "Custom agent rules and python automation scripts for strict phase-by-phase implementation, validation, and rollback workflows.",
+  "version": "2.0.0",
+  "description": "Composable agent skills for phase-by-phase software development. Each skill is independently invocable; the orchestrator chains them optionally.",
   "author": {
-    "name": "Antigravity Assistant"
+    "name": "Paul Sylvester"
   },
   "rules": [
-    "rules/executor.md",
-    "rules/architect.md",
-    "rules/multi-agent-review.md",
-    "rules/orchestrator.md",
-    "rules/specifier.md",
-    "rules/QA_Orchestrator.md",
-    "rules/QA_Architect.md",
-    "rules/QA_Execution.md",
-    "rules/QA_Analyzer.md"
+    "rules/global_gemini_rules.md"
   ],
   "skills": {
-    "parse_plan": "skills/parse_plan.py",
-    "execute_validation": "skills/execute_validation.py",
-    "rollback_workspace": "skills/rollback_workspace.py",
-    "update_status": "skills/update_status.py",
-    "launch_app": "skills/launch_app.py"
+    "specifier-grill": "skills/specifier-grill/SKILL.md",
+    "specifier-prd": "skills/specifier-prd/SKILL.md",
+    "architect": "skills/architect/SKILL.md",
+    "review-council": "skills/review-council/SKILL.md",
+    "executor": "skills/executor/SKILL.md",
+    "orchestrator": "skills/orchestrator/SKILL.md",
+    "prototype": "skills/prototype/SKILL.md",
+    "setup-core-workflow": "skills/setup-core-workflow/SKILL.md"
   }
 }

@@ -1,0 +1,15 @@
+{
+  "name": "qa-workflow",
+  "version": "1.0.0",
+  "description": "Black-box QA pipeline: plan tests from PRD, execute against live app, audit results. Project-agnostic, chainable after core-workflow or callable independently.",
+  "author": {
+    "name": "Paul Sylvester"
+  },
+  "rules": [],
+  "skills": {
+    "qa-orchestrator": "skills/qa-orchestrator/SKILL.md",
+    "qa-architect": "skills/qa-architect/SKILL.md",
+    "qa-execution": "skills/qa-execution/SKILL.md",
+    "qa-analyzer": "skills/qa-analyzer/SKILL.md"
+  }
+}
