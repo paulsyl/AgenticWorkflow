@@ -71,6 +71,7 @@ applyTo: '**'
 
 - Use stable, maintained, and secure dependencies.
 - Avoid introducing unnecessary third-party packages.
+- All code must be commented appropriately so that the logic and meaning can be understood by a human
 
 ---
 
