@@ -1,6 +1,6 @@
 #!/bin/bash
 # install_plugins.sh
-# This script symlinks all plugins from this repository into your local Antigravity config directory.
+# This script symlinks all plugins from this repository into your local AgenticWorkflow / Gemini config directory.
 
 PLUGIN_DIR="$HOME/.gemini/config/plugins"
 REPO_PLUGINS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../plugins" && pwd)"

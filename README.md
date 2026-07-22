@@ -1,6 +1,6 @@
-# Antigravity Global Agents & Plugins
+# AgenticWorkflow Global Agents & Plugins
 
-This repository is the central nervous system for your Antigravity IDE. It defines global instructions, strict development philosophies, and custom agent plugins that standardize how work is executed across *all* of your projects.
+This repository is the central nervous system for your Agentic Workflow IDE setup. It defines global instructions, strict development philosophies, and custom agent plugins that standardize how work is executed across *all* of your projects.
 
 ## Purpose
 
@@ -15,7 +15,7 @@ The primary goal of this repository is to enforce **resilient, secure, and deter
 ## Repository Structure
 
 ```
-Antigravity/
+AgenticWorkflow/
 ├── GEMINI.md                    # Global agent config (security, coding standards, execution policy)
 ├── .antigravityignore           # Prevents agents from touching sensitive directories
 ├── plugins/

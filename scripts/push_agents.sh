@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # push_agents.sh
-# This script pushes global agents/plugins from the Antigravity repo to the .agents directory of all other projects.
+# This script pushes global agents/plugins from the AgenticWorkflow repo to the .agents directory of all other projects.
 
 SOURCE_PLUGINS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../plugins" && pwd)"
 PROJECTS_DIR="$HOME/projects"
