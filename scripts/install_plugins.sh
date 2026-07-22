@@ -16,7 +16,15 @@ for plugin in "$REPO_PLUGINS_DIR"/*; do
     target_link="$PLUGIN_DIR/$plugin_name"
     
     if [ -L "$target_link" ] || [ -e "$target_link" ]; then
-      echo "Plugin '$plugin_name' already exists at $target_link. Skipping..."
+      read -p "Plugin '$plugin_name' already exists. Do you want to update/overwrite it? (y/N) " -n 1 -r
+      echo
+      if [[ $REPLY =~ ^[Yy]$ ]]; then
+        rm -rf "$target_link"
+        ln -s "$plugin" "$target_link"
+        echo "Successfully updated '$plugin_name'."
+      else
+        echo "Skipping '$plugin_name'..."
+      fi
     else
       ln -s "$plugin" "$target_link"
       echo "Successfully linked '$plugin_name'."
