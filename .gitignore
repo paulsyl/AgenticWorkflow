@@ -15,3 +15,10 @@ test_env_created_ids.json
 
 design_build/
 app/
+
+# Core Agentic Workflow artifacts
+AgentWorkflow/
+
+# Python cache
+__pycache__/
+*.pyc

@@ -55,6 +55,14 @@ _Avoid_: [synonyms that cause confusion]
 -->
 ```
 
+### 3.5. Sync Harness Ignore Files
+
+Execute the python ignore sync utility to ensure master `.agentignore` exists and non-destructively syncs to target agent harnesses (`.antigravityignore`, `.copilotignore`, `.github/copilot-ignore`, `.claudeignore`, `.ignore`):
+
+```bash
+python3 scripts/sync_agent_ignores.py
+```
+
 ### 4. Create Project Scope Template (if missing)
 
 If `<workflow_dir>/00_scope/Project-scope.md` doesn't exist, create a template:
