@@ -1,6 +1,6 @@
 # Agentic Workflow for GitHub Copilot
 
-A structured, phase-based software development workflow adapted for GitHub Copilot. Originally designed for Google Antigravity IDE, now fully compatible with GitHub Copilot's agent system.
+A structured, phase-based software development workflow for GitHub Copilot's agent system.
 
 ## Quick Start
 
