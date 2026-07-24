@@ -99,6 +99,39 @@ AgentWorkflow/
 | Design test cases only | `@qa-architect` |
 | Analyze test results | `@qa-analyzer` |
 
+## AI Model Configuration
+
+All agents use **fallback model arrays** to ensure compatibility with your GitHub Copilot subscription. Models are attempted in priority order; the first available model is used.
+
+### Model Strategy
+
+- **Deep reasoning agents** (architect, orchestrator, review-council, specifier-grill): `Claude Sonnet 4.6` → `GPT-5.4` → `GPT-5.3-Codex`
+- **Builder agents** (executor, prototype): `GPT-5.3-Codex` → `GPT-5.4 mini` → `MAI-Code-1-Flash`
+- **Fast/lightweight agents** (ponytail, ponytail-review, ponytail-help): `GPT-5.4 mini` → `MAI-Code-1-Flash` → `GPT-5.3-Codex`
+- **QA agents** (qa-architect, qa-analyzer, qa-orchestrator): `GPT-5.4` → `Claude Sonnet 4.6` → `GPT-5.3-Codex`
+
+### Why Fallback Arrays?
+
+- **No single-model dependency**: If a preferred model is unavailable or your plan changes, agents gracefully fall back to the next option.
+- **Subscription-safe defaults**: All models in the fallback chains are GA (Generally Available) in standard Copilot Pro and Business plans; no Opus/premium-only models as defaults.
+- **Predictable behavior**: The first-available strategy is deterministic and explicit in the agent frontmatter.
+
+### Deployment
+
+Agents are deployed to three locations for cross-workspace availability:
+
+```bash
+# Deploy to user-level VS Code locations
+./scripts/deploy-agents.sh
+```
+
+This copies all `.agent.md` files to:
+- `~/.copilot/agents/`
+- `~/Library/Application Support/Code/User/prompts/agents/`
+- `~/Library/Application Support/Code/User/profiles/builtin/agents/`
+
+After deployment, reload VS Code or restart to refresh the agent picker.
+
 ## Core Principles
 
 - **Security first**: OWASP recommendations, no hardcoded secrets

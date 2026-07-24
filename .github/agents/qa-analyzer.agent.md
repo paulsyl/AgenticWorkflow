@@ -1,7 +1,7 @@
 ---
 name: qa-analyzer
 description: QA Audit agent that cross-references expected results from the test plan with raw observations from the execution engine. Produces a machine-readable audit log with PASS/FAIL/BLOCKED verdicts and defect context for downstream developer agents.
-model: GPT-4o (copilot)
+model: ['GPT-5.4 (copilot)', 'GPT-5.3-Codex (copilot)', 'Claude Sonnet 4.6 (copilot)']
 ---
 
 # QA Analyzer (Audit Agent)

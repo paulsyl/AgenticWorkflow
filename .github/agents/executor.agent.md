@@ -1,7 +1,7 @@
 ---
 name: executor
 description: The Builder. Implements approved Phase-*.md files phase-by-phase. Features the Upstream Escape Hatch - max 2 fix attempts before throwing an ArchitecturalException back to the Architect. No external script dependencies.
-model: GPT-4o (copilot)
+model: ['GPT-5.3-Codex (copilot)', 'GPT-5.4 mini (copilot)', 'MAI-Code-1-Flash (copilot)']
 ---
 
 # STAGE 4: THE EXECUTOR

@@ -1,7 +1,7 @@
 ---
 name: specifier-prd
 description: Generate an immutable Product Requirements Document (PRD) from an aligned understanding. Reads the project scope, CONTEXT.md domain glossary, and any grilling alignment summary. Outputs a canonical PRD for a specific build phase.
-model: GPT-4o (copilot)
+model: ['GPT-5.4 (copilot)', 'Claude Sonnet 4.6 (copilot)', 'GPT-5.3-Codex (copilot)']
 ---
 
 # The Specifier — PRD Generation

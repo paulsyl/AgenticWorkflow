@@ -1,7 +1,7 @@
 ---
 name: ponytail-debt
 description: Harvest every ponytail comment in the codebase into a debt ledger, so the deliberate shortcuts and deferrals ponytail leaves behind get tracked instead of rotting into "later means never". One-shot report, changes nothing.
-model: GPT-4o mini (copilot)
+model: ['GPT-5.4 mini (copilot)', 'MAI-Code-1-Flash (copilot)', 'GPT-5.3-Codex (copilot)']
 ---
 
 # Ponytail Debt

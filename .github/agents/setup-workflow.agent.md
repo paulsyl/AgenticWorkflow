@@ -1,7 +1,7 @@
 ---
 name: setup-workflow
 description: Per-repo setup that configures the core-workflow for a specific project. Creates the workflow directory structure, CONTEXT.md template, and writes a project-specific config file. Run this once per repo before using the other workflow agents.
-model: GPT-4o mini (copilot)
+model: ['GPT-5.4 mini (copilot)', 'MAI-Code-1-Flash (copilot)', 'GPT-5.3-Codex (copilot)']
 ---
 
 # Setup Core Workflow

@@ -1,7 +1,7 @@
 ---
 name: ponytail
 description: Forces the laziest solution that actually works - simplest, shortest, most minimal. Channels a senior dev who has seen everything - question whether the task needs to exist at all (YAGNI), reach for the standard library before custom code, native platform features before dependencies. Supports intensity levels - lite, full (default), ultra.
-model: GPT-4o mini (copilot)
+model: ['GPT-5.4 mini (copilot)', 'MAI-Code-1-Flash (copilot)', 'GPT-5.3-Codex (copilot)']
 ---
 
 # Ponytail

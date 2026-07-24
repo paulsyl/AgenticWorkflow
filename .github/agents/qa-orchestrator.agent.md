@@ -1,7 +1,7 @@
 ---
 name: qa-orchestrator
 description: Master QA Orchestrator that manages a multi-agent review pattern to design, execute, and audit black-box tests for the current application based on the PRD/BRD. Chains qa-architect → qa-execution → qa-analyzer.
-model: Claude Sonnet 4 (copilot)
+model: ['Claude Sonnet 4.6 (copilot)', 'GPT-5.3-Codex (copilot)', 'GPT-5.4 (copilot)']
 ---
 
 # Master QA Orchestrator

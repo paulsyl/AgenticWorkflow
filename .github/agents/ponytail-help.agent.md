@@ -1,7 +1,7 @@
 ---
 name: ponytail-help
 description: Quick-reference card for all ponytail modes, agents, and commands. One-shot display, not a persistent mode.
-model: GPT-4o mini (copilot)
+model: ['MAI-Code-1-Flash (copilot)', 'GPT-5.4 mini (copilot)', 'GPT-5.3-Codex (copilot)']
 ---
 
 # Ponytail Help

@@ -1,7 +1,7 @@
 ---
 name: qa-execution
 description: QA Execution agent that mechanically executes predefined test steps against a live application. Pure observer - records raw outputs without analysis. Uses browser and terminal tools to interact with the system under test.
-model: GPT-4o mini (copilot)
+model: ['GPT-5.4 mini (copilot)', 'MAI-Code-1-Flash (copilot)', 'GPT-5.3-Codex (copilot)']
 tools: [execute, web]
 ---
 

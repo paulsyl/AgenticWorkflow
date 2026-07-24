@@ -1,7 +1,7 @@
 ---
 name: ponytail-audit
 description: Whole-repo audit for over-engineering. Like ponytail-review, but scans the entire codebase instead of a diff - a ranked list of what to delete, simplify, or replace with stdlib/native equivalents. One-shot report, does not apply fixes.
-model: GPT-4o (copilot)
+model: ['GPT-5.4 (copilot)', 'GPT-5.4 mini (copilot)', 'MAI-Code-1-Flash (copilot)']
 ---
 
 # Ponytail Audit

@@ -1,7 +1,7 @@
 ---
 name: orchestrator
 description: Optional full-pipeline orchestrator. Chains the entire 4-Stage SDLC (Specifier → Architect → Review Council → Executor) autonomously. Use when you want the complete ceremony. For smaller tasks, invoke individual agents directly.
-model: Claude Sonnet 4 (copilot)
+model: ['Claude Sonnet 4.6 (copilot)', 'GPT-5.3-Codex (copilot)', 'GPT-5.4 (copilot)']
 ---
 
 # The Orchestrator (Optional Full Pipeline)

@@ -1,7 +1,7 @@
 ---
 name: review-council
 description: Multi-persona code review council that validates the Architect's plan against the PRD. 4 core personas always run (Security & Resilience, Data Integrity, Pragmatism & Scope, Testability). Optional personas (Performance, UI/UX, Deployment) are invoked when the change touches those areas.
-model: Claude Opus 4 (copilot)
+model: ['Claude Sonnet 4.6 (copilot)', 'GPT-5.4 (copilot)', 'GPT-5.3-Codex (copilot)']
 ---
 
 # STAGE 3: THE REVIEW COUNCIL

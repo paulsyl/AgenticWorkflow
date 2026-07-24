@@ -7,7 +7,11 @@ set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+VS_CODE_USER="$HOME/Library/Application Support/Code/User"
 USER_PROMPTS="$HOME/Library/Application Support/Code/User/prompts"
+COPILOT_AGENTS="$HOME/.copilot/agents"
+PROFILE_AGENTS="$HOME/Library/Application Support/Code/User/profiles/builtin/agents"
+SETTINGS_FILE="$VS_CODE_USER/settings.json"
 
 # Colors for output
 GREEN='\033[0;32m'
@@ -18,7 +22,7 @@ echo "Deploying agents to user profile..."
 echo ""
 
 # Create directories
-mkdir -p "$USER_PROMPTS/agents"
+mkdir -p "$USER_PROMPTS/agents" "$COPILOT_AGENTS" "$PROFILE_AGENTS"
 
 # Count files
 AGENT_COUNT=$(ls -1 "$REPO_ROOT/.github/agents/"*.agent.md 2>/dev/null | wc -l | tr -d ' ')
@@ -33,8 +37,37 @@ echo "Deploying $AGENT_COUNT agents..."
 for agent in "$REPO_ROOT/.github/agents/"*.agent.md; do
     filename=$(basename "$agent")
     cp "$agent" "$USER_PROMPTS/agents/$filename"
+    cp "$agent" "$COPILOT_AGENTS/$filename"
+    cp "$agent" "$PROFILE_AGENTS/$filename"
     echo -e "  ${GREEN}✓${NC} $filename"
 done
+
+# Register custom agent locations with VS Code.
+python3 - "$SETTINGS_FILE" "$COPILOT_AGENTS" "$USER_PROMPTS/agents" "$PROFILE_AGENTS" <<'PY'
+import json
+import sys
+from pathlib import Path
+
+settings_path = Path(sys.argv[1])
+agent_locations = sys.argv[2:]
+
+if settings_path.exists():
+    with settings_path.open() as settings_file:
+        settings = json.load(settings_file)
+else:
+    settings_path.parent.mkdir(parents=True, exist_ok=True)
+    settings = {}
+
+locations = settings.setdefault("chat.agentFilesLocations", {})
+for location in agent_locations:
+    locations[location] = True
+
+with settings_path.open("w") as settings_file:
+    json.dump(settings, settings_file, indent=4)
+    settings_file.write("\n")
+PY
+
+echo -e "  ${GREEN}✓${NC} chat.agentFilesLocations"
 
 # Deploy instructions if present
 if [ -f "$REPO_ROOT/.github/copilot-instructions.md" ]; then
@@ -45,13 +78,17 @@ fi
 echo ""
 echo -e "${GREEN}Deployment complete!${NC}"
 echo ""
-echo "Deployed to: $USER_PROMPTS"
+echo "Deployed to:"
+echo "  $COPILOT_AGENTS"
+echo "  $USER_PROMPTS/agents"
+echo "  $PROFILE_AGENTS"
 echo ""
 echo "Available agents:"
-ls -1 "$USER_PROMPTS/agents/"*.agent.md 2>/dev/null | while read f; do
+ls -1 "$COPILOT_AGENTS/"*.agent.md 2>/dev/null | while read f; do
     name=$(basename "$f" .agent.md)
-    echo "  @$name"
+    echo "  $name"
 done
 
 echo ""
 echo -e "${YELLOW}Note:${NC} Restart VS Code or reload window to pick up changes."
+echo -e "${YELLOW}Note:${NC} Select agents from the chat agent dropdown, or type /agents to configure them."

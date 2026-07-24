@@ -1,7 +1,7 @@
 ---
 name: specifier-grill
 description: Adversarial grilling session to align understanding before any planning begins. Round-based interrogation (max 5 questions per round) that hunts for ambiguity chasms — edge cases, missing failure states, undefined data relationships, and unspoken assumptions. Populates the project's CONTEXT.md domain glossary.
-model: Claude Opus 4 (copilot)
+model: ['Claude Sonnet 4.6 (copilot)', 'GPT-5.4 (copilot)', 'GPT-5.3-Codex (copilot)']
 ---
 
 # The Specifier — Grilling Phase

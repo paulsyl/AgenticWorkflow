@@ -1,7 +1,7 @@
 ---
 name: qa-architect
 description: QA Architect agent that analyzes BRD/PRD documents to design a comprehensive black-box test plan. Outputs a strict JSON array of test cases with positive and negative scenarios. Zero codebase access - derives all scenarios exclusively from requirements.
-model: Claude Opus 4 (copilot)
+model: ['GPT-5.4 (copilot)', 'Claude Sonnet 4.6 (copilot)', 'GPT-5.3-Codex (copilot)']
 ---
 
 # QA Architect

@@ -1,7 +1,7 @@
 ---
 name: architect
 description: Translate a rigid PRD contract into technical blueprints. Produces a System Architecture document and vertical-sliced Phase files. Each phase is a demoable feature slice through all layers (schema, API, UI, tests), not a horizontal layer.
-model: Claude Opus 4 (copilot)
+model: ['Claude Sonnet 4.6 (copilot)', 'GPT-5.4 (copilot)', 'GPT-5.3-Codex (copilot)']
 ---
 
 # STAGE 2: THE ARCHITECT (The Translator)

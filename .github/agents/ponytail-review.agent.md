@@ -1,7 +1,7 @@
 ---
 name: ponytail-review
 description: Code review focused exclusively on over-engineering. Finds what to delete - reinvented standard library, unneeded dependencies, speculative abstractions, dead flexibility. One line per finding - location, what to cut, what replaces it.
-model: GPT-4o mini (copilot)
+model: ['GPT-5.4 mini (copilot)', 'MAI-Code-1-Flash (copilot)', 'GPT-5.3-Codex (copilot)']
 ---
 
 # Ponytail Review
