@@ -37,19 +37,47 @@ echo "Deploying $AGENT_COUNT agents..."
 for agent in "$REPO_ROOT/.github/agents/"*.agent.md; do
     filename=$(basename "$agent")
     cp "$agent" "$USER_PROMPTS/agents/$filename"
-    cp "$agent" "$COPILOT_AGENTS/$filename"
     cp "$agent" "$PROFILE_AGENTS/$filename"
+    python3 - "$agent" "$COPILOT_AGENTS/$filename" <<'PY'
+import re
+import sys
+from pathlib import Path
+
+source = Path(sys.argv[1])
+target = Path(sys.argv[2])
+text = source.read_text()
+
+model_slugs = {
+    "Claude Sonnet 4.6 (copilot)": "claude-sonnet-4.6",
+    "GPT-5.4 (copilot)": "gpt-5.4",
+    "GPT-5.3-Codex (copilot)": "gpt-5.3-codex",
+    "GPT-5.4 mini (copilot)": "gpt-5.4-mini",
+    "MAI-Code-1-Flash (copilot)": "mai-code-1-flash",
+}
+
+def cli_model(match):
+    models = [item.strip().strip("'\"") for item in match.group(1).split(",")]
+    for model in models:
+        if model in model_slugs:
+            return f"model: {model_slugs[model]}"
+    raise SystemExit(f"No CLI model slug mapping for {source}: {models}")
+
+text = re.sub(r"^model:\s*\[([^\n]+)\]$", cli_model, text, count=1, flags=re.MULTILINE)
+target.write_text(text)
+PY
     echo -e "  ${GREEN}✓${NC} $filename"
 done
 
-# Register custom agent locations with VS Code.
+# Register custom agent locations with VS Code. The ~/.copilot/agents copies are
+# CLI-compatible and use scalar model slugs, so keep VS Code on its own copies.
 python3 - "$SETTINGS_FILE" "$COPILOT_AGENTS" "$USER_PROMPTS/agents" "$PROFILE_AGENTS" <<'PY'
 import json
 import sys
 from pathlib import Path
 
 settings_path = Path(sys.argv[1])
-agent_locations = sys.argv[2:]
+cli_agent_location = sys.argv[2]
+agent_locations = sys.argv[3:]
 
 if settings_path.exists():
     with settings_path.open() as settings_file:
@@ -59,6 +87,7 @@ else:
     settings = {}
 
 locations = settings.setdefault("chat.agentFilesLocations", {})
+locations.pop(cli_agent_location, None)
 for location in agent_locations:
     locations[location] = True
 

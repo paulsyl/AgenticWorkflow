@@ -118,19 +118,20 @@ All agents use **fallback model arrays** to ensure compatibility with your GitHu
 
 ### Deployment
 
-Agents are deployed to three locations for cross-workspace availability:
+Agents are deployed to VS Code and Copilot CLI locations for cross-workspace availability:
 
 ```bash
-# Deploy to user-level VS Code locations
+# Deploy to user-level VS Code and Copilot CLI locations
 ./scripts/deploy-agents.sh
 ```
 
-This copies all `.agent.md` files to:
-- `~/.copilot/agents/`
-- `~/Library/Application Support/Code/User/prompts/agents/`
-- `~/Library/Application Support/Code/User/profiles/builtin/agents/`
+This deploys two compatible formats:
 
-After deployment, reload VS Code or restart to refresh the agent picker.
+- `~/Library/Application Support/Code/User/prompts/agents/` keeps the source `.agent.md` files with model fallback arrays for VS Code.
+- `~/Library/Application Support/Code/User/profiles/builtin/agents/` keeps the source `.agent.md` files with model fallback arrays for VS Code profiles.
+- `~/.copilot/agents/` receives Copilot CLI-compatible copies where model fallback arrays are converted to scalar model slugs, because the CLI currently rejects array-valued `model` frontmatter.
+
+After deployment, reload VS Code or restart to refresh the agent picker. In Copilot CLI, use `/agent` interactively or `copilot --agent <name>` from the shell.
 
 ## Core Principles
 
