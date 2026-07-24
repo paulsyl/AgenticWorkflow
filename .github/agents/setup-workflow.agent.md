@@ -73,7 +73,76 @@ If `<workflow_dir>/00_scope/Project-scope.md` doesn't exist, create a template:
 [Budget, timeline, tech stack, team size]
 ```
 
-### 5. Write Config
+### 5. Ensure Repository Ignore Files
+
+Create or update `.gitignore` at the repo root. Preserve existing entries and append the workflow directory if it is missing:
+
+```gitignore
+# Agent workflow artifacts
+<workflow_dir>/
+```
+
+Create or update `.copilotignore` at the repo root. Preserve existing entries and append these defaults if they are missing. Do not add the workflow directory to `.copilotignore`; workflow markdown outputs must remain visible to LLMs.
+
+```gitignore
+# Dependencies and generated output
+node_modules/
+dist/
+build/
+coverage/
+.next/
+.nuxt/
+.svelte-kit/
+.vite/
+.venv/
+venv/
+__pycache__/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+target/
+bin/
+obj/
+vendor/
+
+# Binary and archive files
+*.7z
+*.a
+*.bin
+*.class
+*.dll
+*.dmg
+*.dylib
+*.exe
+*.gz
+*.iso
+*.jar
+*.lib
+*.o
+*.pdf
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.webp
+*.pyc
+*.so
+*.tar
+*.tgz
+*.zip
+
+# Logs, caches, and local data
+*.log
+*.sqlite
+*.sqlite3
+*.db
+.cache/
+.DS_Store
+```
+
+If the selected workflow directory includes a leading `./`, normalize it to a repo-root relative ignore pattern with one trailing slash for `.gitignore` only, e.g. `AgentWorkflow/`.
+
+### 6. Write Config
 
 Write `.github/workflow-config.md` at the repo root:
 
@@ -86,13 +155,15 @@ Write `.github/workflow-config.md` at the repo root:
 - **Date configured:** <today>
 ```
 
-### 6. Confirm
+### 7. Confirm
 
 ```
 ✅ Core workflow configured for this repository.
 
 Workflow artifacts: <workflow_dir>/
 Config saved: .github/workflow-config.md
+Git ignore updated: .gitignore
+Copilot ignore updated: .copilotignore
 
 Available agents:
   @specifier-grill  — alignment & grilling
