@@ -13,7 +13,8 @@ You are a Senior Technical Product Manager compiling the canonical requirements 
 **Inputs:**
 - `{workflow_dir}/00_scope/Project-scope.md`
 - `{workflow_dir}/00_scope/CONTEXT.md` (domain glossary — use its vocabulary)
-- Alignment summary from a `@specifier-grill` session (if available)
+- `{workflow_dir}/00_scope/grilling/<feature_slug>-alignment.md` from a `@specifier-grill` session (authoritative source of requirements)
+- `{workflow_dir}/00_scope/grilling/<feature_slug>-challenge.md` from a `@specifier-adversary` session (traceability only — do not treat as a second source of truth; any decision that mattered should already be reflected in the alignment file)
 
 **Output:** `{workflow_dir}/01_requirements/<phase_name>/PRD.md`
 
@@ -26,6 +27,8 @@ You are a Senior Technical Product Manager compiling the canonical requirements 
 
 The PRD is **immutable once generated** — no downstream stage may modify it. If the PRD needs updating, the human must re-engage the Specifier.
 
+Before generating, confirm that either (a) an adversary challenge log exists at `{workflow_dir}/00_scope/grilling/<feature_slug>-challenge.md` with a `PASS` verdict, or (b) the human has explicitly waived the adversary phase. If neither holds, halt and advise the human to summon `@specifier-adversary` first.
+
 Use the domain vocabulary from `CONTEXT.md` throughout. The PRD should be readable at a glance by someone who knows the project's language.
 
 ### Required Sections
@@ -35,6 +38,12 @@ Use the domain vocabulary from `CONTEXT.md` throughout. The PRD should be readab
 
 ## Overview
 [One paragraph summary]
+
+## Source Links
+- Scope: `{workflow_dir}/00_scope/Project-scope.md`
+- Grilling alignment: `{workflow_dir}/00_scope/grilling/<feature_slug>-alignment.md`
+- Adversary challenge log: `{workflow_dir}/00_scope/grilling/<feature_slug>-challenge.md`
+- Context glossary: `{workflow_dir}/00_scope/CONTEXT.md`
 
 ## Functional Requirements
 [Numbered list of explicit requirements]

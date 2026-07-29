@@ -29,6 +29,7 @@ Ask the user (accept defaults if they press enter):
 
 ```bash
 mkdir -p <workflow_dir>/00_scope
+mkdir -p <workflow_dir>/00_scope/grilling
 mkdir -p <workflow_dir>/01_requirements
 mkdir -p <workflow_dir>/02_architecture/iterations
 mkdir -p <workflow_dir>/03_reviews

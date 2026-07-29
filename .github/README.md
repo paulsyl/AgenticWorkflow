@@ -14,8 +14,9 @@ A structured, phase-based software development workflow for GitHub Copilot's age
 
 | Agent | Purpose |
 |-------|---------|
-| `@orchestrator` | Full pipeline automation — chains all stages autonomously |
+| `@orchestrator` | Build-loop automation (architect → review-council → executor). Runs after the specifier loop is complete. |
 | `@specifier-grill` | Adversarial grilling to align understanding before planning |
+| `@specifier-adversary` | Different-model-family counter-grilling of the alignment summary; runs before the PRD |
 | `@specifier-prd` | Generate immutable Product Requirements Documents |
 | `@architect` | Translate PRDs into vertical-sliced technical blueprints |
 | `@review-council` | Multi-persona validation (Security, Data, Pragmatism, Testability) |
@@ -55,14 +56,15 @@ After running `@setup-workflow`:
 AgentWorkflow/
 ├── 00_scope/
 │   ├── Project-scope.md    # Your project description
-│   └── CONTEXT.md          # Domain glossary (built during grilling)
+│   ├── CONTEXT.md          # Domain glossary (built during grilling)
+│   └── grilling/           # Confirmed alignment summaries
 ├── 01_requirements/
 │   └── <phase>/PRD.md      # Immutable requirements contracts
 ├── 02_architecture/
 │   ├── System-Architecture.md
 │   └── iterations/<iter>/Phase-*.md
 ├── 03_reviews/
-│   └── review_log.md
+│   └── <phase>/<iter>/<phase>-review.md
 ├── 04_execution/
 │   └── PROGRESS.md
 └── 05_Testing/
@@ -76,24 +78,36 @@ AgentWorkflow/
 ```
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
 │  STAGE 1        │    │  STAGE 2        │    │  STAGE 3        │    │  STAGE 4        │
-│  Specifier      │───▶│  Architect      │───▶│  Review Council │───▶│  Executor       │
-│  (Grill + PRD)  │    │  (Blueprints)   │    │  (Validation)   │    │  (Build)        │
-└─────────────────┘    └─────────────────┘    └─────────────────┘    └─────────────────┘
-                              ▲                       │
-                              └───────────────────────┘
+│  Specifier     │───▶│  Architect      │───▶│  Review Council │───▶│  Executor       │
+│  Grill ↔ Adv    │    │  (Blueprints)   │    │  (Validation)   │    │  (Build)        │
+│  → PRD          │    └────────────────┘    └────────────────┘    └────────────────┘
+└────────────────┘            ▲                       │
+                             └───────────────────────┘
                                   (REJECT → iterate)
 ```
+
+Stage 1 has its own internal loop:
+
+```
+@specifier-grill  ──▶  @specifier-adversary  ──▶  @specifier-prd
+       ▲                     │
+       └────────────────────┘
+         (escalation → amend alignment)
+```
+
+The adversary runs on a different model family from the grill to break shared model bias.
 
 ## When to Use What
 
 | Scenario | Agent(s) |
 |----------|----------|
-| New major feature | `@orchestrator` (full ceremony) |
+| New major feature | Manual specifier loop (`@specifier-grill` → `@specifier-adversary` → `@specifier-prd`), then `@orchestrator` for the build ceremony |
 | Quick bug fix | `@ponytail` directly |
 | Explore a design question | `@prototype` |
 | Review PR for bloat | `@ponytail-review` |
 | Audit entire codebase | `@ponytail-audit` |
-| Just the requirements | `@specifier-grill` → `@specifier-prd` |
+| Just the requirements | `@specifier-grill` → `@specifier-adversary` → `@specifier-prd` |
+| Stress-test an existing alignment | `@specifier-adversary` |
 | Just the architecture | `@architect` |
 | Black-box testing | `@qa-orchestrator` (full QA pipeline) |
 | Design test cases only | `@qa-architect` |
@@ -106,6 +120,7 @@ All agents use **fallback model arrays** to ensure compatibility with your GitHu
 ### Model Strategy
 
 - **Deep reasoning agents** (architect, orchestrator, review-council, specifier-grill): `Claude Sonnet 4.6` → `GPT-5.4` → `GPT-5.3-Codex`
+- **Adversary agent** (specifier-adversary): `GPT-5.4` → `GPT-5.3-Codex` — **pinned to a different family from `@specifier-grill`** to break shared model bias when challenging the alignment
 - **Builder agents** (executor, prototype): `GPT-5.3-Codex` → `GPT-5.4 mini` → `MAI-Code-1-Flash`
 - **Fast/lightweight agents** (ponytail, ponytail-review, ponytail-help): `GPT-5.4 mini` → `MAI-Code-1-Flash` → `GPT-5.3-Codex`
 - **QA agents** (qa-architect, qa-analyzer, qa-orchestrator): `GPT-5.4` → `Claude Sonnet 4.6` → `GPT-5.3-Codex`
