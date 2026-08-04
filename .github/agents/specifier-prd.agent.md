@@ -57,6 +57,12 @@ Use the domain vocabulary from `CONTEXT.md` throughout. The PRD should be readab
 ## Edge Cases & Failure States
 [Explicit handling for each identified edge case]
 
+## Architecture & Technology Considerations
+[Non-binding trade-offs/options carried verbatim from the grilling alignment's "Architecture & Technology Considerations" section, if present. For @architect to weigh — not a decision.]
+
+## AI Leverage & Risks
+[Carried verbatim from the grilling alignment's "AI Leverage & Risks" section, if present: opportunities and anti-patterns for gen-AI use. For @architect to weigh — not a decision.]
+
 ## Out of Scope
 [Explicitly excluded items to prevent scope creep]
 

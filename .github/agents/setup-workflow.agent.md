@@ -143,7 +143,51 @@ vendor/
 
 If the selected workflow directory includes a leading `./`, normalize it to a repo-root relative ignore pattern with one trailing slash for `.gitignore` only, e.g. `AgentWorkflow/`.
 
-### 6. Write Config
+### 6. Ensure Project README
+
+If `README.md` does not exist at the repo root, create a comprehensive starter that follows the Documentation Requirements in `copilot-instructions.md`. If it already exists, leave it untouched.
+
+```markdown
+# <Project Name>
+
+[One-paragraph description of what this project does and the problem it solves.]
+
+## Features
+
+- [Key capability]
+
+## Prerequisites
+
+- [Required runtimes, tools, and versions]
+
+## Installation
+
+[Step-by-step, isolated setup — containers/virtual envs/`node_modules`; no global installs on the host.]
+
+## Configuration
+
+[Required environment variables and config files, using placeholders like `YOUR_SECRET_HERE`. Never commit real secrets.]
+
+## Usage
+
+[Copy-pasteable commands and examples showing how to run the app and exercise its main features.]
+
+## Testing
+
+\`\`\`bash
+<test_command>
+\`\`\`
+
+## Project Structure
+
+[Short map of the key directories and their purpose.]
+
+## License
+
+[License, where applicable.]
+```
+
+### 7. Write Config
 
 Write `.github/workflow-config.md` at the repo root:
 
@@ -156,7 +200,7 @@ Write `.github/workflow-config.md` at the repo root:
 - **Date configured:** <today>
 ```
 
-### 7. Confirm
+### 8. Confirm
 
 ```
 ✅ Core workflow configured for this repository.
@@ -165,6 +209,7 @@ Workflow artifacts: <workflow_dir>/
 Config saved: .github/workflow-config.md
 Git ignore updated: .gitignore
 Copilot ignore updated: .copilotignore
+Project README: README.md
 
 Available agents:
   @specifier-grill  — alignment & grilling
