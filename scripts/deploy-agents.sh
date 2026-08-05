@@ -1,6 +1,6 @@
 #!/bin/bash
 # deploy-agents.sh
-# Deploys workflow agents and instructions to user profile for global availability.
+# Deploys workflow agents and Antigravity skills to user profile for global availability.
 # Run from the repository root: ./scripts/deploy-agents.sh
 
 set -e
@@ -13,32 +13,57 @@ COPILOT_AGENTS="$HOME/.copilot/agents"
 PROFILE_AGENTS="$HOME/Library/Application Support/Code/User/profiles/builtin/agents"
 SETTINGS_FILE="$VS_CODE_USER/settings.json"
 
+# Antigravity Config Target Directories
+ANTIGRAVITY_SKILLS_HOME="$HOME/.gemini/config/skills"
+
 # Colors for output
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
-echo "Deploying agents to user profile..."
+echo "Deploying agents and Antigravity skills to user profile..."
 echo ""
 
 # Create directories
-mkdir -p "$USER_PROMPTS/agents" "$COPILOT_AGENTS" "$PROFILE_AGENTS"
+mkdir -p "$USER_PROMPTS/agents" "$COPILOT_AGENTS" "$PROFILE_AGENTS" "$ANTIGRAVITY_SKILLS_HOME"
 
-# Count files
-AGENT_COUNT=$(ls -1 "$REPO_ROOT/.github/agents/"*.agent.md 2>/dev/null | wc -l | tr -d ' ')
-
-if [ "$AGENT_COUNT" -eq 0 ]; then
-    echo "No agent files found in .github/agents/"
-    exit 1
+# Deploy Antigravity Skills if present
+if [ -d "$REPO_ROOT/skills" ]; then
+    SKILL_DIRS=("$REPO_ROOT/skills/"*/)
+    if [ -e "${SKILL_DIRS[0]}" ]; then
+        echo "Deploying Antigravity skills..."
+        for skill_dir in "${SKILL_DIRS[@]}"; do
+            if [ -d "$skill_dir" ]; then
+                skill_name=$(basename "$skill_dir")
+                mkdir -p "$ANTIGRAVITY_SKILLS_HOME/$skill_name"
+                cp -r "$skill_dir"* "$ANTIGRAVITY_SKILLS_HOME/$skill_name/" 2>/dev/null || true
+                
+                # If running in WSL and Windows profile exists, sync to Windows path as well
+                if [ -d "/mnt/c/Users" ]; then
+                    for win_user in /mnt/c/Users/*; do
+                        if [ -d "$win_user/.gemini/config" ]; then
+                            mkdir -p "$win_user/.gemini/config/skills/$skill_name"
+                            cp -r "$skill_dir"* "$win_user/.gemini/config/skills/$skill_name/" 2>/dev/null || true
+                        fi
+                    done
+                fi
+                echo -e "  ${GREEN}✓${NC} [Antigravity Skill] $skill_name"
+            fi
+        done
+        echo ""
+    fi
 fi
 
-# Deploy agents
-echo "Deploying $AGENT_COUNT agents..."
-for agent in "$REPO_ROOT/.github/agents/"*.agent.md; do
-    filename=$(basename "$agent")
-    cp "$agent" "$USER_PROMPTS/agents/$filename"
-    cp "$agent" "$PROFILE_AGENTS/$filename"
-    python3 - "$agent" "$COPILOT_AGENTS/$filename" <<'PY'
+# Count Copilot agent files
+AGENT_COUNT=$(ls -1 "$REPO_ROOT/.github/agents/"*.agent.md 2>/dev/null | wc -l | tr -d ' ')
+
+if [ "$AGENT_COUNT" -gt 0 ]; then
+    echo "Deploying $AGENT_COUNT Copilot agents..."
+    for agent in "$REPO_ROOT/.github/agents/"*.agent.md; do
+        filename=$(basename "$agent")
+        cp "$agent" "$USER_PROMPTS/agents/$filename"
+        cp "$agent" "$PROFILE_AGENTS/$filename"
+        python3 - "$agent" "$COPILOT_AGENTS/$filename" <<'PY'
 import re
 import sys
 from pathlib import Path
@@ -65,12 +90,11 @@ def cli_model(match):
 text = re.sub(r"^model:\s*\[([^\n]+)\]$", cli_model, text, count=1, flags=re.MULTILINE)
 target.write_text(text)
 PY
-    echo -e "  ${GREEN}✓${NC} $filename"
-done
+        echo -e "  ${GREEN}✓${NC} [Copilot Agent] $filename"
+    done
 
-# Register custom agent locations with VS Code. The ~/.copilot/agents copies are
-# CLI-compatible and use scalar model slugs, so keep VS Code on its own copies.
-python3 - "$SETTINGS_FILE" "$COPILOT_AGENTS" "$USER_PROMPTS/agents" "$PROFILE_AGENTS" <<'PY'
+    # Register custom agent locations with VS Code.
+    python3 - "$SETTINGS_FILE" "$COPILOT_AGENTS" "$USER_PROMPTS/agents" "$PROFILE_AGENTS" <<'PY'
 import json
 import sys
 from pathlib import Path
@@ -96,7 +120,8 @@ with settings_path.open("w") as settings_file:
     settings_file.write("\n")
 PY
 
-echo -e "  ${GREEN}✓${NC} chat.agentFilesLocations"
+    echo -e "  ${GREEN}✓${NC} chat.agentFilesLocations"
+fi
 
 # Deploy instructions if present
 if [ -f "$REPO_ROOT/.github/copilot-instructions.md" ]; then
@@ -107,17 +132,16 @@ fi
 echo ""
 echo -e "${GREEN}Deployment complete!${NC}"
 echo ""
-echo "Deployed to:"
+echo "Deployed Antigravity skills to:"
+echo "  $ANTIGRAVITY_SKILLS_HOME"
+echo ""
+echo "Deployed Copilot agents to:"
 echo "  $COPILOT_AGENTS"
 echo "  $USER_PROMPTS/agents"
 echo "  $PROFILE_AGENTS"
 echo ""
-echo "Available agents:"
-ls -1 "$COPILOT_AGENTS/"*.agent.md 2>/dev/null | while read f; do
-    name=$(basename "$f" .agent.md)
-    echo "  $name"
+echo "Available Antigravity skills:"
+ls -1d "$REPO_ROOT/skills/"*/ 2>/dev/null | while read d; do
+    name=$(basename "$d")
+    echo "  @$name"
 done
-
-echo ""
-echo -e "${YELLOW}Note:${NC} Restart VS Code or reload window to pick up changes."
-echo -e "${YELLOW}Note:${NC} Select agents from the chat agent dropdown, or type /agents to configure them."
