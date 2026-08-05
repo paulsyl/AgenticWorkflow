@@ -5,8 +5,8 @@ A structured, phase-based software development workflow for GitHub Copilot's age
 ## Quick Start
 
 1. Invoke `@setup-workflow` to configure the workflow for your repository
-2. Define your project scope in `AgentWorkflow/00_scope/Project-scope.md`
-3. Start with `@specifier-grill` for requirements alignment, or use `@orchestrator` for the full pipeline
+2. Start with `@specifier-grill` — it captures your scope through conversation, no pre-written scope file needed
+3. Use `@orchestrator` for the build ceremony once you have an approved PRD
 
 ## Available Agents
 
@@ -15,9 +15,8 @@ A structured, phase-based software development workflow for GitHub Copilot's age
 | Agent | Purpose |
 |-------|---------|
 | `@orchestrator` | Build-loop automation (architect → review-council → executor). Runs after the specifier loop is complete. |
-| `@specifier-grill` | Adversarial grilling to align understanding before planning |
-| `@specifier-adversary` | Different-model-family counter-grilling of the alignment summary; runs before the PRD |
-| `@specifier-prd` | Generate immutable Product Requirements Documents |
+| `@specifier-grill` | Adversarial grilling, alignment, and PRD generation — captures scope through conversation |
+| `@specifier-adversary` | Different-model-family counter-grilling of the alignment summary; runs before PRD generation |
 | `@architect` | Translate PRDs into vertical-sliced technical blueprints |
 | `@review-council` | Multi-persona validation (Security, Data, Pragmatism, Testability) |
 | `@executor` | Phase-by-phase implementation with escape hatch |
@@ -54,23 +53,17 @@ After running `@setup-workflow`:
 
 ```
 AgentWorkflow/
-├── 00_scope/
-│   ├── Project-scope.md    # Your project description
-│   ├── CONTEXT.md          # Domain glossary (built during grilling)
-│   └── grilling/           # Confirmed alignment summaries
 ├── 01_requirements/
-│   └── <phase>/PRD.md      # Immutable requirements contracts
+│   └── <phase>/
+│       ├── alignment.md    # Self-contained grilling output (scope, glossary, decisions)
+│       ├── challenge.md    # Adversary challenge log
+│       └── PRD.md          # Immutable requirements contract
 ├── 02_architecture/
-│   ├── System-Architecture.md
 │   └── iterations/<iter>/Phase-*.md
 ├── 03_reviews/
 │   └── <phase>/<iter>/<phase>-review.md
-├── 04_execution/
-│   └── PROGRESS.md
-└── 05_Testing/
-    ├── test_plan.json      # QA Architect output
-    ├── execution_log.json  # QA Execution output
-    └── audit_log.json      # QA Analyzer output
+└── 04_execution/
+    └── PROGRESS.md
 ```
 
 ## The 4-Stage Pipeline
@@ -78,35 +71,48 @@ AgentWorkflow/
 ```
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
 │  STAGE 1        │    │  STAGE 2        │    │  STAGE 3        │    │  STAGE 4        │
-│  Specifier     │───▶│  Architect      │───▶│  Review Council │───▶│  Executor       │
-│  Grill ↔ Adv    │    │  (Blueprints)   │    │  (Validation)   │    │  (Build)        │
-│  → PRD          │    └────────────────┘    └────────────────┘    └────────────────┘
-└────────────────┘            ▲                       │
-                             └───────────────────────┘
-                                  (REJECT → iterate)
+│  Specifier      │───▶│  Architect      │───▶│  Review Council │───▶│  Executor       │
+│  Grill ↔ Adv    │    │  (Phases only)  │    │  (Terse verdict)│    │  (Build)        │
+│  → PRD          │    └─────────────────┘    └─────────────────┘    └─────────────────┘
+└─────────────────┘            ▲                       │
+                               └───────────────────────┘
+                                    (REJECT → iterate)
 ```
 
 Stage 1 has its own internal loop:
 
 ```
-@specifier-grill  ──▶  @specifier-adversary  ──▶  @specifier-prd
+@specifier-grill  ──▶  @specifier-adversary  ──▶  @specifier-grill (PRD mode)
        ▲                     │
-       └────────────────────┘
+       └─────────────────────┘
          (escalation → amend alignment)
 ```
 
 The adversary runs on a different model family from the grill to break shared model bias.
 
+### Token-Efficient Context Flow
+
+Each stage reads **only** its direct input — no cumulative re-reading of upstream documents:
+
+| Stage | Reads | Produces |
+|-------|-------|----------|
+| Grill | Conversation (no files) | Self-contained alignment (scope + glossary + decisions) |
+| Adversary | Alignment only | Challenge log |
+| Grill (PRD mode) | Alignment + challenge verdict | PRD (with inline glossary) |
+| Architect | PRD only | Phase files (self-contained, no code snippets) |
+| Review Council | PRD + Phase files | Terse checklist verdicts |
+| Executor | Phase files only | Code |
+
 ## When to Use What
 
 | Scenario | Agent(s) |
 |----------|----------|
-| New major feature | Manual specifier loop (`@specifier-grill` → `@specifier-adversary` → `@specifier-prd`), then `@orchestrator` for the build ceremony |
+| New major feature | Manual specifier loop (`@specifier-grill` → `@specifier-adversary` → `@specifier-grill` for PRD), then `@orchestrator` for the build ceremony |
 | Quick bug fix | `@ponytail` directly |
 | Explore a design question | `@prototype` |
 | Review PR for bloat | `@ponytail-review` |
 | Audit entire codebase | `@ponytail-audit` |
-| Just the requirements | `@specifier-grill` → `@specifier-adversary` → `@specifier-prd` |
+| Just the requirements | `@specifier-grill` → `@specifier-adversary` → `@specifier-grill` (PRD mode) |
 | Stress-test an existing alignment | `@specifier-adversary` |
 | Just the architecture | `@architect` |
 | Black-box testing | `@qa-orchestrator` (full QA pipeline) |
@@ -153,5 +159,6 @@ After deployment, reload VS Code or restart to refresh the agent picker. In Copi
 - **Security first**: OWASP recommendations, no hardcoded secrets
 - **Ponytail philosophy**: The best code is the code never written
 - **Vertical slicing**: Each phase delivers a demoable feature, not a horizontal layer
+- **Forward-only context**: Each stage reads only its direct input — no cumulative re-reading
 - **Planning mode default**: Never move to build mode without explicit approval
 - **Upstream escape hatch**: Max 2 fix attempts before escalating to Architect

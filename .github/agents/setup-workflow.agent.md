@@ -1,6 +1,6 @@
 ---
 name: setup-workflow
-description: Per-repo setup that configures the core-workflow for a specific project. Creates the workflow directory structure, CONTEXT.md template, and writes a project-specific config file. Run this once per repo before using the other workflow agents.
+description: Per-repo setup that configures the core-workflow for a specific project. Creates the workflow directory structure and writes a project-specific config file. Run this once per repo before using the other workflow agents.
 model: ['GPT-5.4 mini (copilot)', 'MAI-Code-1-Flash (copilot)', 'GPT-5.3-Codex (copilot)']
 ---
 
@@ -28,53 +28,13 @@ Ask the user (accept defaults if they press enter):
 ### 2. Create Directory Structure
 
 ```bash
-mkdir -p <workflow_dir>/00_scope
-mkdir -p <workflow_dir>/00_scope/grilling
 mkdir -p <workflow_dir>/01_requirements
 mkdir -p <workflow_dir>/02_architecture/iterations
 mkdir -p <workflow_dir>/03_reviews
 mkdir -p <workflow_dir>/04_execution
-mkdir -p <workflow_dir>/05_Testing
 ```
 
-### 3. Create CONTEXT.md Template
-
-Write `<workflow_dir>/00_scope/CONTEXT.md`:
-
-```markdown
-# Project Context
-
-## Language
-
-<!-- Add domain-specific terms here during @specifier-grill sessions -->
-<!-- Format:
-**[Term]**:
-[Definition in one or two lines.]
-_Avoid_: [synonyms that cause confusion]
--->
-```
-
-### 4. Create Project Scope Template (if missing)
-
-If `<workflow_dir>/00_scope/Project-scope.md` doesn't exist, create a template:
-
-```markdown
-# Project Scope
-
-## What are we building?
-[Describe the feature or project]
-
-## Who is it for?
-[Target users]
-
-## What does success look like?
-[Measurable outcomes]
-
-## Known constraints
-[Budget, timeline, tech stack, team size]
-```
-
-### 5. Ensure Repository Ignore Files
+### 3. Ensure Repository Ignore Files
 
 Create or update `.gitignore` at the repo root. Preserve existing entries and append the workflow directory if it is missing:
 
@@ -143,7 +103,7 @@ vendor/
 
 If the selected workflow directory includes a leading `./`, normalize it to a repo-root relative ignore pattern with one trailing slash for `.gitignore` only, e.g. `AgentWorkflow/`.
 
-### 6. Ensure Project README
+### 4. Ensure Project README
 
 If `README.md` does not exist at the repo root, create a comprehensive starter that follows the Documentation Requirements in `copilot-instructions.md`. If it already exists, leave it untouched.
 
@@ -187,7 +147,7 @@ If `README.md` does not exist at the repo root, create a comprehensive starter t
 [License, where applicable.]
 ```
 
-### 7. Write Config
+### 5. Write Config
 
 Write `.github/workflow-config.md` at the repo root:
 
@@ -200,7 +160,7 @@ Write `.github/workflow-config.md` at the repo root:
 - **Date configured:** <today>
 ```
 
-### 8. Confirm
+### 6. Confirm
 
 ```
 ✅ Core workflow configured for this repository.
@@ -212,14 +172,14 @@ Copilot ignore updated: .copilotignore
 Project README: README.md
 
 Available agents:
-  @specifier-grill  — alignment & grilling
-  @specifier-prd    — PRD generation
-  @architect        — technical blueprints (vertical slices)
-  @review-council   — plan validation (4 core reviewers)
-  @executor         — phase-by-phase implementation
-  @orchestrator     — full pipeline (optional)
-  @prototype        — throwaway exploration
-  @ponytail         — lazy senior dev mode
+  @specifier-grill   — alignment, grilling & PRD generation
+  @specifier-adversary — adversarial challenge of alignment
+  @architect          — technical blueprints (vertical slices)
+  @review-council     — plan validation (4 core reviewers)
+  @executor           — phase-by-phase implementation
+  @orchestrator       — build loop (optional)
+  @prototype          — throwaway exploration
+  @ponytail           — lazy senior dev mode
 
 QA agents:
   @qa-orchestrator  — full QA pipeline

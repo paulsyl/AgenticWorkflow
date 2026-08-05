@@ -17,38 +17,35 @@ You have been invoked as the **Orchestrator**. Your job is to drive the build-si
 Before entering the loop, verify:
 
 1. `{workflow_dir}/01_requirements/<phase_name>/PRD.md` exists for the requested phase.
-2. `{workflow_dir}/00_scope/grilling/<feature_slug>-alignment.md` exists (linked from the PRD).
-3. `{workflow_dir}/00_scope/grilling/<feature_slug>-challenge.md` exists with a `PASS` verdict, **or** the human explicitly waives the adversary check.
-4. `{workflow_dir}/00_scope/CONTEXT.md` exists.
+2. `{workflow_dir}/01_requirements/<phase_name>/challenge.md` exists with a `PASS` verdict, **or** the human explicitly waives the adversary check.
 
-If any of the above is missing, halt and instruct the human to run `@specifier-grill`, then `@specifier-adversary`, then `@specifier-prd`, before re-invoking the orchestrator.
+If any of the above is missing, halt and instruct the human to run `@specifier-grill` (which handles grilling, adversary coordination, and PRD generation) before re-invoking the orchestrator.
 
 Once preflight passes, execute the following stages in sequence. Do not stop between stages.
 
 ## STAGE 1: Architecture
 
 1. Adopt the persona defined in `@architect`.
-2. Create `{workflow_dir}/02_architecture/System-Architecture.md` and `Phase-*.md` files based strictly on the PRD.
+2. Create `Phase-*.md` files based strictly on the PRD. The architect reads only the PRD.
 3. **Override:** Ignore any instruction in `@architect` to halt. Immediately proceed to STAGE 2.
 
 ## STAGE 2: Review Council
 
 1. Adopt the personas defined in `@review-council`.
-2. Run the strict validation loop on the Architect's plan against the PRD, writing one review log per phase at `{workflow_dir}/03_reviews/<phase_name>/<iteration_name>/<phase_file_stem>-review.md` with links to the PRD, grilling alignment summary, adversary challenge log, context glossary, system architecture, and phase blueprint.
+2. Run the strict validation loop on the Architect's plan against the PRD, writing one review log per phase at `{workflow_dir}/03_reviews/<phase_name>/<iteration_name>/<phase_file_stem>-review.md`.
 3. **Iteration Override:** STAGES 1 and 2 must iterate until all core review comments are addressed. If the Review Council outputs `REJECT`, the Architect must fix the plan. The system advances to STAGE 3 only when all 4 core personas output a clean `PASS`.
 
 ## STAGE 3: Execution
 
 1. Adopt the persona defined in `@executor`.
-2. Execute the `Phase-*.md` files exactly as specified.
+2. Execute the `Phase-*.md` files exactly as specified. Each phase is self-contained.
 3. If the Executor throws an `ArchitecturalException`, route the logs and diff back to STAGE 1, then pass through STAGE 2 again.
 
 ## Manual Invocation
 
 Any stage — including the specifier loop this orchestrator deliberately excludes — can be run independently by the user:
-- `@specifier-grill` → alignment/grilling
+- `@specifier-grill` → alignment, grilling, adversary coordination, and PRD generation
 - `@specifier-adversary` → adversarial challenge of the alignment
-- `@specifier-prd` → PRD generation
 - `@architect` → architecture & phases
 - `@review-council` → plan review
 - `@executor` → phase-by-phase execution
