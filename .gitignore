@@ -1,24 +1,5 @@
-# Virtual environment
-.venv/
-
-# Nested git repositories / tools
-MUGS_Society/
-.github/
-
-# VS Code workspace files
-MUGS.code-workspace
-.vscode/
-
-# Test output and runtime files
-test_env_created_ids.json
-*.log
-
-design_build/
-app/
-
-# Core Agentic Workflow artifacts
+# Agent workflow artifacts
 AgentWorkflow/
 
-# Python cache
-__pycache__/
-*.pyc
+# Local system files
+.DS_Store

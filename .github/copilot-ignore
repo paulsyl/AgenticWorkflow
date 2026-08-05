@@ -1,0 +1,49 @@
+# --- BEGIN AGENTIC WORKFLOW IGNORE ---
+# Master .agentignore
+# Media & Binaries
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.webp
+*.ico
+*.mp4
+*.mov
+*.mp3
+*.wav
+*.pdf
+*.zip
+*.tar.gz
+*.7z
+*.exe
+*.dll
+*.so
+*.dylib
+*.bin
+*.iso
+
+# Model Weights & Large Datasets
+*.onnx
+*.pth
+*.safetensors
+*.parquet
+*.sqlite
+*.db
+
+# Lockfiles
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+Cargo.lock
+poetry.lock
+
+# Build & Cache Directories
+node_modules/
+dist/
+build/
+.venv/
+.next/
+.git/
+coverage/
+__pycache__/
+# --- END AGENTIC WORKFLOW IGNORE ---

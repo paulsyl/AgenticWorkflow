@@ -1,49 +1,53 @@
-# --- BEGIN AGENTIC WORKFLOW IGNORE ---
-# Master .agentignore
-# Media & Binaries
+# Dependencies and generated output
+node_modules/
+dist/
+build/
+coverage/
+.next/
+.nuxt/
+.svelte-kit/
+.vite/
+.venv/
+venv/
+__pycache__/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+target/
+bin/
+obj/
+vendor/
+
+# Binary and archive files
+*.7z
+*.a
+*.bin
+*.class
+*.dll
+*.dmg
+*.dylib
+*.exe
+*.gz
+*.iso
+*.jar
+*.lib
+*.o
+*.pdf
 *.png
 *.jpg
 *.jpeg
 *.gif
 *.webp
-*.ico
-*.mp4
-*.mov
-*.mp3
-*.wav
-*.pdf
-*.zip
-*.tar.gz
-*.7z
-*.exe
-*.dll
+*.pyc
 *.so
-*.dylib
-*.bin
-*.iso
+*.tar
+*.tgz
+*.zip
 
-# Model Weights & Large Datasets
-*.onnx
-*.pth
-*.safetensors
-*.parquet
+# Logs, caches, and local data
+*.log
 *.sqlite
+*.sqlite3
 *.db
-
-# Lockfiles
-package-lock.json
-pnpm-lock.yaml
-yarn.lock
-Cargo.lock
-poetry.lock
-
-# Build & Cache Directories
-node_modules/
-dist/
-build/
-.venv/
-.next/
-.git/
-coverage/
-__pycache__/
-# --- END AGENTIC WORKFLOW IGNORE ---
+.cache/
+.DS_Store
