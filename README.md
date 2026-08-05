@@ -2,6 +2,16 @@
 
 A token-optimized, multi-harness software development workflow supporting both **Antigravity & Gemini** and **GitHub Copilot & Visual Studio Code**.
 
+> [!IMPORTANT]
+> **Developer Directives: Modifying Agents**
+> All agent modifications **MUST** be made exclusively inside the `agents/` directory (e.g., `agents/specifier-grill.md`).
+> 
+> **NEVER** edit files in `skills/` or `.github/agents/` directly — those are compiled build outputs that will be overwritten.
+> 
+> After making any change in `agents/`, run `./scripts/deploy.sh` (or `python scripts\compile_and_deploy.py` on Windows) to recompile and redeploy across all target environments.
+
+---
+
 ## Architecture: Single Source of Truth (`agents/`)
 
 All agents are defined **once** as canonical master templates in `agents/`. 
@@ -19,29 +29,23 @@ AgenticWorkflow/
 │   ├── prototype.md
 │   ├── ponytail*.md
 │   └── qa-*.md
-├── skills/                           # ⚙️ Compiled Antigravity Skills (skills/<name>/SKILL.md)
-├── .github/agents/                   # ⚙️ Compiled Copilot Agents (.github/agents/<name>.agent.md)
 ├── scripts/
 │   ├── compile_and_deploy.py         # 🐍 Cross-OS Compiler & Deployer (macOS, Linux/WSL, Windows)
 │   └── deploy.sh                     # 🚀 Single deployment wrapper
+├── .gitignore                        # 🛡️ Ignores compiled build outputs (skills/, .github/)
 └── README.md
 ```
 
 ---
 
-## 🚀 Deployment (Cross-OS Support)
+## 🚀 Deployment & Re-deployment Workflow
 
-A single deployment command compiles the master templates from `agents/` into target-specific formats and deploys them to all detected user profile locations across **macOS**, **Linux / WSL Ubuntu**, and **Windows Native (CMD / PowerShell)**.
+When modifying or creating an agent:
 
-### macOS / Linux / WSL:
-```bash
-./scripts/deploy.sh
-```
-
-### Windows Native (PowerShell / CMD):
-```powershell
-python scripts\compile_and_deploy.py
-```
+1. **Edit**: Make your changes in `agents/<agent-name>.md`.
+2. **Deploy**: Run the single deployment script:
+   - **macOS / Linux / WSL**: `./scripts/deploy.sh`
+   - **Windows Native**: `python scripts\compile_and_deploy.py`
 
 ### What Deployment Does Automatically:
 1. **Compiles Antigravity Skills**: Generates `skills/<name>/SKILL.md` for Antigravity & Gemini.
@@ -52,7 +56,7 @@ python scripts\compile_and_deploy.py
 
 ---
 
-## Available Agents & Skills (18 Total)
+## Available Agents & Skills (17 Total)
 
 ### Core Workflow (4-Stage SDLC)
 

@@ -15,6 +15,14 @@ applyTo: '**'
 
 ---
 
+## Agent & Skill Modification Policy (CRITICAL)
+
+- **Single Source of Truth**: All workflow agents, skills, and prompts **MUST** be edited exclusively in the `agents/` directory (e.g., `agents/specifier-grill.md`).
+- **Never edit compiled outputs directly**: Do not modify files in `skills/` or `.github/agents/` — those are compiled build artifacts that will be overwritten.
+- **Redeployment**: After modifying any file in `agents/`, run `./scripts/deploy.sh` (or `python scripts\compile_and_deploy.py` on Windows) to recompile and deploy across all target environments.
+
+---
+
 ## Security Requirements
 
 ### 1. Secret Handling
@@ -71,7 +79,7 @@ applyTo: '**'
 
 - Use stable, maintained, and secure dependencies.
 - Avoid introducing unnecessary third-party packages.
-- All code must be commented appropriately so that the logic and meaning can be understood by a human
+- All code must be commented appropriately so that the logic and meaning can be understood by a human.
 
 ---
 
