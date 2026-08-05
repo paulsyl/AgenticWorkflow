@@ -1,5 +1,14 @@
 # Agent workflow artifacts
 AgentWorkflow/
 
+# Python cache & compiled files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
 # Local system files
 .DS_Store
