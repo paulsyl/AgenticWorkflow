@@ -1,6 +1,7 @@
 ---
 name: prototype
 description: Build throwaway code that answers a design question. No PRD, no review council, no ceremony. Two branches - Logic (terminal/backend exploration) or UI (visual exploration). Clearly marked as discardable.
+model: ['GPT-5.3-Codex (copilot)', 'GPT-5.4 mini (copilot)', 'MAI-Code-1-Flash (copilot)']
 ---
 
 # Prototype

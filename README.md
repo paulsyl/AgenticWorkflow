@@ -1,46 +1,96 @@
-# Agentic Workflow for Antigravity & Gemini
+# Agentic Workflow (Single Source of Truth)
 
-A structured, token-optimized software development workflow for Antigravity and Gemini.
+A token-optimized, multi-harness software development workflow supporting both **Antigravity & Gemini** and **GitHub Copilot & Visual Studio Code**.
 
-## Quick Start
+## Architecture: Single Source of Truth (`agents/`)
 
-1. Run `@setup-core-workflow` (or `/setup-core-workflow`) to configure the workflow for your repository.
-2. Start with `@specifier-grill` — it captures your scope through conversation, no pre-written scope file needed.
-3. Use `@orchestrator` for the build ceremony once you have an approved PRD.
+All agents are defined **once** as canonical master templates in `agents/`. 
 
-## Available Skills
+```text
+AgenticWorkflow/
+├── agents/                           # 🎯 SINGLE SOURCE OF TRUTH (Master Templates)
+│   ├── specifier-grill.md
+│   ├── specifier-adversary.md
+│   ├── architect.md
+│   ├── review-council.md
+│   ├── executor.md
+│   ├── orchestrator.md
+│   ├── setup-workflow.md
+│   ├── prototype.md
+│   ├── ponytail*.md
+│   └── qa-*.md
+├── skills/                           # ⚙️ Compiled Antigravity Skills (skills/<name>/SKILL.md)
+├── .github/agents/                   # ⚙️ Compiled Copilot Agents (.github/agents/<name>.agent.md)
+├── scripts/
+│   ├── compile_and_deploy.py         # 🐍 Cross-OS Compiler & Deployer (macOS, Linux/WSL, Windows)
+│   └── deploy.sh                     # 🚀 Single deployment wrapper
+└── README.md
+```
+
+---
+
+## 🚀 Deployment (Cross-OS Support)
+
+A single deployment command compiles the master templates from `agents/` into target-specific formats and deploys them to all detected user profile locations across **macOS**, **Linux / WSL Ubuntu**, and **Windows Native (CMD / PowerShell)**.
+
+### macOS / Linux / WSL:
+```bash
+./scripts/deploy.sh
+```
+
+### Windows Native (PowerShell / CMD):
+```powershell
+python scripts\compile_and_deploy.py
+```
+
+### What Deployment Does Automatically:
+1. **Compiles Antigravity Skills**: Generates `skills/<name>/SKILL.md` for Antigravity & Gemini.
+2. **Compiles Copilot Agents**: Generates `.github/agents/<name>.agent.md` for GitHub Copilot.
+3. **Deploys Globally**:
+   - **Antigravity**: Deploys to `~/.gemini/config/skills/` (and `%USERPROFILE%\.gemini\config\skills\` if WSL/Windows).
+   - **Copilot**: Deploys to VS Code user prompts, builtin profile agents, and Copilot CLI (`~/.copilot/agents/`).
+
+---
+
+## Available Agents & Skills (18 Total)
 
 ### Core Workflow (4-Stage SDLC)
 
-| Skill | Purpose |
-|-------|---------|
-| `@specifier-grill` | Adversarial grilling, alignment, and PRD generation — captures scope through conversation |
-| `@specifier-adversary` | Counter-grilling of alignment summary to break bias before PRD generation |
-| `@architect` | Translate PRDs into vertical-sliced technical blueprints (`Phase-*.md`) |
-| `@review-council` | Multi-persona validation (Security & Resilience, Data Integrity, Pragmatism & Scope, Testability) |
-| `@executor` | Phase-by-phase implementation with escape hatch |
-| `@orchestrator` | Build-loop automation (`@architect` → `@review-council` → `@executor`) |
-| `@prototype` | Throwaway exploration code — no ceremony |
+| Agent / Skill | Purpose |
+|---------------|---------|
+| `specifier-grill` | Adversarial grilling, alignment, and PRD generation — captures scope in conversation |
+| `specifier-adversary` | Counter-grilling of alignment summary (pinned to different model family) to break bias |
+| `architect` | Translate PRDs into vertical-sliced technical blueprints (`Phase-*.md`) |
+| `review-council` | Multi-persona validation (Security & Resilience, Data Integrity, Pragmatism & Scope, Testability) |
+| `executor` | Phase-by-phase implementation with escape hatch via `@ponytail` |
+| `orchestrator` | Build-loop automation (`architect` → `review-council` → `executor`) |
+| `prototype` | Throwaway exploration code — no ceremony |
+| `setup-workflow` | Initialize workflow directories and configuration |
 
 ### Ponytail (Lazy Senior Dev Mode)
 
-| Skill | Purpose |
-|-------|---------|
-| `@ponytail` | Forces simplest solution: YAGNI, stdlib first, minimal code |
-| `@ponytail-review` | Over-engineering focused code review |
-| `@ponytail-audit` | Whole-repo audit for complexity |
-| `@ponytail-debt` | Track deliberate simplifications |
-| `@ponytail-help` | Quick reference card |
+| Agent / Skill | Purpose |
+|---------------|---------|
+| `ponytail` | Forces simplest solution: YAGNI, stdlib first, minimal code |
+| `ponytail-review` | Over-engineering focused code review |
+| `ponytail-audit` | Whole-repo audit for complexity |
+| `ponytail-debt` | Track deliberate simplifications |
+| `ponytail-help` | Quick reference card |
 
-### Setup
+### QA Workflow (Black-Box Testing)
 
-| Skill | Purpose |
-|-------|---------|
-| `@setup-core-workflow` | Initialize workflow directories and configuration |
+| Agent / Skill | Purpose |
+|---------------|---------|
+| `qa-orchestrator` | Full QA pipeline |
+| `qa-architect` | Design test plans from PRD/BRD (zero codebase access) |
+| `qa-execution` | Execute tests against live app, record raw observations |
+| `qa-analyzer` | Audit results, produce PASS/FAIL/BLOCKED verdicts |
+
+---
 
 ## Workflow Directory Structure
 
-After running `@setup-core-workflow`:
+After running setup (`/setup-core-workflow` or `@setup-workflow`):
 
 ```text
 AgentWorkflow/
@@ -55,49 +105,4 @@ AgentWorkflow/
 │   └── <phase>/<iter>/<phase>-review.md
 └── 04_execution/
     └── PROGRESS.md
-```
-
-## The 4-Stage Pipeline
-
-```mermaid
-flowchart TD
-    Start([User Request]) --> Grill[fa:fa-comments @specifier-grill]
-    
-    Grill <--> |Interrogation Loop| Human[Human Clarification]
-    Grill --> |Self-Contained Alignment| Adv[fa:fa-shield @specifier-adversary]
-    Adv <--> |Challenge Loop| Grill
-    Adv -- PASS verdict --> GrillPRD[Grill: PRD Mode]
-    
-    GrillPRD --> |Output: 01_requirements/<phase>/PRD.md| Architect[fa:fa-sitemap @architect]
-    
-    Architect --> |Output: 02_architecture/iterations/<iter>/Phase-*.md| ReviewCouncil[fa:fa-gavel @review-council]
-    ReviewCouncil <--> |Validation Loop| Architect
-    
-    ReviewCouncil --> |All Core Personas PASS| Executor[fa:fa-cogs @executor]
-    
-    subgraph Execution Loop
-        Executor --> |Reads Phase-*.md| Code[Writes Code via @ponytail]
-        Code --> Validate[Run validation tests]
-        Validate -- Pass --> Status[Update Status to Complete]
-        Status --> NextPhase{More Phases?}
-        NextPhase -- Yes --> Executor
-        
-        Validate -- Fail --> Fix[Attempt Fix]
-        Fix --> Validate2[Run validation tests]
-        Validate2 -- Pass --> Status
-        Validate2 -- Fail --> Limit{3rd Failure?}
-        Limit -- No --> Fix
-        Limit -- Yes --> Rollback[fa:fa-undo Rollback & Throw Exception]
-        Rollback --> Architect
-    end
-    
-    NextPhase -- No --> Finish([All Phases Complete])
-```
-
-## Deployment
-
-To deploy all skills globally to your Antigravity configuration (`~/.gemini/config/skills/`):
-
-```bash
-./scripts/deploy-skills.sh
 ```
