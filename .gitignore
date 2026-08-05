@@ -1,6 +1,10 @@
 # Agent workflow artifacts
 AgentWorkflow/
 
+# Generated agent outputs (compiled on-demand from agents/ master templates)
+skills/
+.github/agents/
+
 # Python cache & compiled files
 __pycache__/
 *.pyc
