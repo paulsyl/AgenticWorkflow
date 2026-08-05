@@ -1,9 +1,14 @@
-# Agent workflow artifacts
+# Agent workflow execution artifacts
 AgentWorkflow/
 
-# Generated agent outputs (compiled on-demand from agents/ master templates)
+# Single Source of Truth Compiled Build Outputs (generated on-demand by scripts/deploy.sh)
 skills/
-.github/agents/
+.github/
+.agents/skills/
+
+# Antigravity & Gemini IDE local cache / session state
+.antigravity/
+.gemini/
 
 # Python cache & compiled files
 __pycache__/
