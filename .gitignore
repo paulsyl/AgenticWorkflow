@@ -5,6 +5,9 @@ AgentWorkflow/
 skills/
 .github/
 .agents/skills/
+GEMINI.md
+CLAUDE.md
+.cursorrules
 
 # Antigravity & Gemini IDE local cache / session state
 .antigravity/

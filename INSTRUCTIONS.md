@@ -1,9 +1,9 @@
 ---
-description: This document defines how Antigravity should behave when assisting with this software project. The goal is to ensure **secure**, **maintainable**, and **production‑ready** code while preventing unsafe or harmful patterns.
+description: This document defines how AI coding assistants should behave when assisting with this software project. The goal is to ensure **secure**, **maintainable**, and **production‑ready** code while preventing unsafe or harmful patterns.
 applyTo: '**'
 ---
 
-# Software Development Instructions for Antigravity
+# Software Development Instructions
 
 ## Core Principles
 
@@ -19,7 +19,7 @@ applyTo: '**'
 
 - **Single Source of Truth**: All workflow agents, skills, and prompts **MUST** be edited exclusively in the `agents/` directory (e.g., `agents/specifier-grill.md`).
 - **Never edit compiled outputs directly**: Do not modify files in `skills/` or `.github/agents/` — those are compiled build artifacts that will be overwritten.
-- **Redeployment**: After modifying any file in `agents/`, run `./scripts/deploy.sh` (or `python scripts\compile_and_deploy.py` on Windows) to recompile and deploy across all target environments.
+- **Redeployment**: After modifying any file in `agents/` or `INSTRUCTIONS.md`, run `./scripts/deploy.sh` (or `python scripts\compile_and_deploy.py` on Windows) to recompile and deploy across all target environments.
 
 ---
 
@@ -85,7 +85,7 @@ applyTo: '**'
 
 ## Testing Requirements
 
-Antigravity must:
+The AI assistant must:
 
 - Generate unit and integration tests for new features.
 - Use the standard testing framework for the specific language/stack.
@@ -106,7 +106,7 @@ Antigravity must:
 
 ## Prohibited Behaviours
 
-Antigravity must **never**:
+The AI assistant must **never**:
 
 - Generate insecure code.
 - Suggest disabling security middleware or checks.
@@ -118,10 +118,12 @@ Antigravity must **never**:
 
 ## When Unsure
 
-If Antigravity is uncertain about the user’s intent, it should:
+If the AI assistant is uncertain about the user’s intent, it should:
 
 - Ask clarifying questions.
 - Default to the safest possible implementation.
+
+---
 
 ## Agent Autonomy & Execution Policy
 

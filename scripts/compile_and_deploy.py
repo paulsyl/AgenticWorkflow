@@ -197,7 +197,23 @@ def build_and_deploy():
     print(f"  ✓ Compiled {antigravity_count} Antigravity Skills -> skills/<name>/SKILL.md")
     print(f"  ✓ Compiled {copilot_count} Copilot Agents -> .github/agents/<name>.agent.md")
 
-    # 3. Deploy to System Target Paths
+    # 3. Compile Project Instructions (INSTRUCTIONS.md -> target instruction files)
+    instructions_file = REPO_ROOT / "INSTRUCTIONS.md"
+    if instructions_file.exists():
+        instructions_text = instructions_file.read_text(encoding="utf-8")
+        instruction_targets = {
+            "GEMINI.md": instructions_text,
+            ".github/copilot-instructions.md": instructions_text,
+            "CLAUDE.md": instructions_text,
+            ".cursorrules": instructions_text,
+        }
+        for rel_path, content in instruction_targets.items():
+            target_path = REPO_ROOT / rel_path
+            target_path.parent.mkdir(parents=True, exist_ok=True)
+            target_path.write_text(content, encoding="utf-8")
+        print(f"  ✓ Compiled Project Instructions -> GEMINI.md, .github/copilot-instructions.md, CLAUDE.md, .cursorrules")
+
+    # 4. Deploy to System Target Paths
     target_paths = get_target_paths()
     print("\nDeploying to environment target profiles...")
 
