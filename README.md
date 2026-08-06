@@ -48,9 +48,15 @@ When modifying or creating an agent:
    - **Windows Native**: `python scripts\compile_and_deploy.py`
 
 ### What Deployment Does Automatically:
-1. **Compiles Antigravity Skills**: Generates `skills/<name>/SKILL.md` for Antigravity & Gemini.
-2. **Compiles Copilot Agents**: Generates `.github/agents/<name>.agent.md` for GitHub Copilot.
-3. **Deploys Globally**:
+1. **Resolves Cross-Harness Tokens**: Substitutes tool-agnostic placeholders in `agents/*.md` for each environment:
+   - `{{CONFIG_PATH}}` $\rightarrow$ `.agents/core-workflow-config.md` (Antigravity) / `.github/workflow-config.md` (Copilot)
+   - `{{SETUP_CMD}}` $\rightarrow$ `/setup-core-workflow` (Antigravity) / `@setup-workflow` (Copilot)
+   - `{{IGNORE_FILE}}` $\rightarrow$ `.antigravityignore` (Antigravity) / `.copilotignore` (Copilot)
+   - `{{INSTRUCTIONS_FILE}}` $\rightarrow$ `GEMINI.md` (Antigravity) / `.github/copilot-instructions.md` (Copilot)
+   - `{{@agent-name}}` $\rightarrow$ `/agent-name` (Antigravity) / `@agent-name` (Copilot)
+2. **Compiles Antigravity Skills**: Generates `skills/<name>/SKILL.md` for Antigravity & Gemini.
+3. **Compiles Copilot Agents**: Generates `.github/agents/<name>.agent.md` for GitHub Copilot.
+4. **Deploys Globally**:
    - **Antigravity**: Deploys to `~/.gemini/config/skills/` (and `%USERPROFILE%\.gemini\config\skills\` if WSL/Windows).
    - **Copilot**: Deploys to VS Code user prompts, builtin profile agents, and Copilot CLI (`~/.copilot/agents/`).
 
@@ -62,7 +68,7 @@ When modifying or creating an agent:
 
 | Agent / Skill | Purpose |
 |---------------|---------|
-| `specifier-grill` | Adversarial grilling, alignment, and PRD generation — captures scope in conversation |
+| `specifier-grill` | Progressive 4-stage adversarial grilling, alignment, and PRD generation (Vision $\rightarrow$ Boundaries $\rightarrow$ Systems $\rightarrow$ Tech Trade-offs) |
 | `specifier-adversary` | Counter-grilling of alignment summary (pinned to different model family) to break bias |
 | `architect` | Translate PRDs into vertical-sliced technical blueprints (`Phase-*.md`) |
 | `review-council` | Multi-persona validation (Security & Resilience, Data Integrity, Pragmatism & Scope, Testability) |
