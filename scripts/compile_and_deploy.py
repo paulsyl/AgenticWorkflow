@@ -108,14 +108,34 @@ def parse_master_template(template_path: Path):
     return frontmatter, content, text
 
 
+COPILOT_TOKENS = {
+    "{{CONFIG_PATH}}": ".github/workflow-config.md",
+    "{{SETUP_CMD}}": "@setup-workflow",
+    "{{IGNORE_FILE}}": ".copilotignore",
+    "{{INSTRUCTIONS_FILE}}": ".github/copilot-instructions.md",
+}
+
+ANTIGRAVITY_TOKENS = {
+    "{{CONFIG_PATH}}": ".agents/core-workflow-config.md",
+    "{{SETUP_CMD}}": "/setup-core-workflow",
+    "{{IGNORE_FILE}}": ".antigravityignore",
+    "{{INSTRUCTIONS_FILE}}": "GEMINI.md",
+}
+
+
+def compile_for_target(text: str, token_map: dict, agent_prefix: str) -> str:
+    """Universal compiler: replace tokens + agent cross-references."""
+    for placeholder, value in token_map.items():
+        text = text.replace(placeholder, value)
+    # {{@agent-name}} → @agent-name (Copilot) or /agent-name (Antigravity)
+    text = re.sub(r'\{\{@([\w-]+)\}\}', lambda m: agent_prefix + m.group(1), text)
+    return text
+
+
 def compile_antigravity_skill(stem: str, text: str) -> str:
     """Transforms template into Antigravity SKILL.md format."""
-    # Replace config path
-    text = text.replace(".github/workflow-config.md", ".agents/core-workflow-config.md")
-    # Replace setup skill call
-    text = text.replace("@setup-workflow", "/setup-core-workflow")
-    text = text.replace("@setup-core-workflow", "/setup-core-workflow")
-    # Clean up any Copilot specific model frontmatter
+    text = compile_for_target(text, ANTIGRAVITY_TOKENS, agent_prefix="/")
+    # Strip Copilot-only model frontmatter
     text = re.sub(r"^model:\s*\[.*?\]\n?", "", text, flags=re.MULTILINE)
     text = re.sub(r"^models:\s*\n(\s+.*\n)*", "", text, flags=re.MULTILINE)
     return text
@@ -123,12 +143,7 @@ def compile_antigravity_skill(stem: str, text: str) -> str:
 
 def compile_copilot_agent(stem: str, text: str) -> str:
     """Transforms template into GitHub Copilot .agent.md format."""
-    # Replace config path
-    text = text.replace(".agents/core-workflow-config.md", ".github/workflow-config.md")
-    # Replace setup skill call
-    text = text.replace("/setup-core-workflow", "@setup-workflow")
-    text = text.replace("@setup-core-workflow", "@setup-workflow")
-    return text
+    return compile_for_target(text, COPILOT_TOKENS, agent_prefix="@")
 
 
 def convert_model_for_cli(text: str) -> str:

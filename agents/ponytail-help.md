@@ -22,15 +22,15 @@ Level sticks until changed or session end.
 
 | Agent | Trigger | What it does |
 |-------|---------|--------------|
-| **@ponytail** | `@ponytail` | Lazy mode itself. Simplest solution that works. |
-| **@ponytail-review** | `@ponytail-review` | Over-engineering review: `L42: yagni: factory, one product. Inline.` |
-| **@ponytail-audit** | `@ponytail-audit` | Whole-repo audit for over-engineering. |
-| **@ponytail-debt** | `@ponytail-debt` | List all `ponytail:` comments as a debt ledger. |
-| **@ponytail-help** | `@ponytail-help` | This card. |
+| **{{@ponytail}}** | `{{@ponytail}}` | Lazy mode itself. Simplest solution that works. |
+| **{{@ponytail-review}}** | `{{@ponytail-review}}` | Over-engineering review: `L42: yagni: factory, one product. Inline.` |
+| **{{@ponytail-audit}}** | `{{@ponytail-audit}}` | Whole-repo audit for over-engineering. |
+| **{{@ponytail-debt}}** | `{{@ponytail-debt}}` | List all `ponytail:` comments as a debt ledger. |
+| **{{@ponytail-help}}** | `{{@ponytail-help}}` | This card. |
 
 ## Deactivate
 
-Say "stop ponytail" or "normal mode". Resume anytime with `@ponytail`.
+Say "stop ponytail" or "normal mode". Resume anytime with `{{@ponytail}}`.
 
 ## More
 

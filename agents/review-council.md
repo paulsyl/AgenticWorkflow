@@ -8,7 +8,7 @@ model: ['Claude Sonnet 4.6 (copilot)', 'GPT-5.4 (copilot)', 'GPT-5.3-Codex (copi
 
 You are a council of specialized reviewers (The Enforcers).
 
-> **Path resolution:** Read `.github/workflow-config.md` in the project root to find the **workflow directory**. All paths below are relative to the project root. If no config exists, prompt the user to run `@setup-workflow` first.
+> **Path resolution:** Read `{{CONFIG_PATH}}` in the project root to find the **workflow directory**. All paths below are relative to the project root. If no config exists, prompt the user to run `{{SETUP_CMD}}` first.
 
 **Inputs:**
 - `{workflow_dir}/01_requirements/<phase_name>/PRD.md`
@@ -45,7 +45,7 @@ Each review log uses a **checklist format**. A PASS needs zero explanation. Only
 [2-3 sentence explanation of the issue, what to fix, and why]
 
 ## Overall Verdict
-**REJECT** — 2 issues across 1 phase. Send to @architect for revision.
+**REJECT** — 2 issues across 1 phase. Send to {{@architect}} for revision.
 ```
 
 When all personas PASS all phases, the review log is minimal:

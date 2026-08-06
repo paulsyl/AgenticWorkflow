@@ -43,7 +43,7 @@ Create or update `.gitignore` at the repo root. Preserve existing entries and ap
 <workflow_dir>/
 ```
 
-Create or update `.copilotignore` at the repo root. Preserve existing entries and append these defaults if they are missing. Do not add the workflow directory to `.copilotignore`; workflow markdown outputs must remain visible to LLMs.
+Create or update `{{IGNORE_FILE}}` at the repo root. Preserve existing entries and append these defaults if they are missing. Do not add the workflow directory to `{{IGNORE_FILE}}`; workflow markdown outputs must remain visible to LLMs.
 
 ```gitignore
 # Dependencies and generated output
@@ -105,7 +105,7 @@ If the selected workflow directory includes a leading `./`, normalize it to a re
 
 ### 4. Ensure Project README
 
-If `README.md` does not exist at the repo root, create a comprehensive starter that follows the Documentation Requirements in `copilot-instructions.md`. If it already exists, leave it untouched.
+If `README.md` does not exist at the repo root, create a comprehensive starter that follows the Documentation Requirements in `{{INSTRUCTIONS_FILE}}`. If it already exists, leave it untouched.
 
 ```markdown
 # <Project Name>
@@ -149,7 +149,7 @@ If `README.md` does not exist at the repo root, create a comprehensive starter t
 
 ### 5. Write Config
 
-Write `.github/workflow-config.md` at the repo root:
+Write `{{CONFIG_PATH}}` at the repo root:
 
 ```markdown
 # Core Workflow Configuration
@@ -166,24 +166,24 @@ Write `.github/workflow-config.md` at the repo root:
 ✅ Core workflow configured for this repository.
 
 Workflow artifacts: <workflow_dir>/
-Config saved: .github/workflow-config.md
+Config saved: {{CONFIG_PATH}}
 Git ignore updated: .gitignore
-Copilot ignore updated: .copilotignore
+Agent ignore updated: {{IGNORE_FILE}}
 Project README: README.md
 
 Available agents:
-  @specifier-grill   — alignment, grilling & PRD generation
-  @specifier-adversary — adversarial challenge of alignment
-  @architect          — technical blueprints (vertical slices)
-  @review-council     — plan validation (4 core reviewers)
-  @executor           — phase-by-phase implementation
-  @orchestrator       — build loop (optional)
-  @prototype          — throwaway exploration
-  @ponytail           — lazy senior dev mode
+  {{@specifier-grill}}   — alignment, grilling & PRD generation
+  {{@specifier-adversary}} — adversarial challenge of alignment
+  {{@architect}}          — technical blueprints (vertical slices)
+  {{@review-council}}     — plan validation (4 core reviewers)
+  {{@executor}}           — phase-by-phase implementation
+  {{@orchestrator}}       — build loop (optional)
+  {{@prototype}}          — throwaway exploration
+  {{@ponytail}}           — lazy senior dev mode
 
 QA agents:
-  @qa-orchestrator  — full QA pipeline
-  @qa-architect     — test plan design
-  @qa-execution     — test execution
-  @qa-analyzer      — results audit
+  {{@qa-orchestrator}}  — full QA pipeline
+  {{@qa-architect}}     — test plan design
+  {{@qa-execution}}     — test execution
+  {{@qa-analyzer}}      — results audit
 ```

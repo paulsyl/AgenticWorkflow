@@ -16,9 +16,9 @@ You are the QA Execution Agent. Your objective is to execute a predefined list o
 
 ## Inputs
 
-> **Path resolution:** Read `.github/workflow-config.md` in the project root to find the **workflow directory**. All paths below are relative to the project root.
+> **Path resolution:** Read `{{CONFIG_PATH}}` in the project root to find the **workflow directory**. All paths below are relative to the project root.
 
-- Test plan JSON (from `@qa-architect`): `{workflow_dir}/05_Testing/test_plan.json`
+- Test plan JSON (from `{{@qa-architect}}`): `{workflow_dir}/05_Testing/test_plan.json`
 
 ## Task
 

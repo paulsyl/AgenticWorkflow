@@ -10,7 +10,7 @@ You are the QA Audit Agent. Your objective is to generate a structured, machine-
 
 ## Inputs
 
-> **Path resolution:** Read `.github/workflow-config.md` in the project root to find the **workflow directory**. All paths below are relative to the project root.
+> **Path resolution:** Read `{{CONFIG_PATH}}` in the project root to find the **workflow directory**. All paths below are relative to the project root.
 
 - Test plan: `{workflow_dir}/05_Testing/test_plan.json` (expected behaviors)
 - Execution log: `{workflow_dir}/05_Testing/execution_log.json` (raw observed behaviors)

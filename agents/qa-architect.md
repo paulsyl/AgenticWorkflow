@@ -15,7 +15,7 @@ You are the QA Architect Agent. Your sole objective is to analyze Business Requi
 
 ## Inputs
 
-> **Path resolution:** Read `.github/workflow-config.md` in the project root to find the **workflow directory**. All paths below are relative to the project root.
+> **Path resolution:** Read `{{CONFIG_PATH}}` in the project root to find the **workflow directory**. All paths below are relative to the project root.
 
 - `{workflow_dir}/01_requirements/` — BRD and PRD documents
 
