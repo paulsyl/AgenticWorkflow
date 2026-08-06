@@ -10,6 +10,7 @@ Reads master agent definitions from `agents/*.md` and automatically:
 """
 
 import json
+import argparse
 import os
 import platform
 import re
@@ -123,6 +124,24 @@ ANTIGRAVITY_TOKENS = {
 }
 
 
+def parse_args():
+    """Parses deployment flags.
+
+    Profiles:
+    - copilot (default): emit Copilot-only instruction artifacts
+    - antigravity: emit Antigravity-only instruction artifacts
+    - all: emit both sets (for mixed environments)
+    """
+    parser = argparse.ArgumentParser(description="Compile and deploy workflow agents.")
+    parser.add_argument(
+        "--profile",
+        choices=["copilot", "antigravity", "all"],
+        default=os.environ.get("AGW_DEPLOY_PROFILE", "copilot"),
+        help="Deployment profile. Defaults to 'copilot'.",
+    )
+    return parser.parse_args()
+
+
 def compile_for_target(text: str, token_map: dict, agent_prefix: str) -> str:
     """Universal compiler: replace tokens + agent cross-references."""
     for placeholder, value in token_map.items():
@@ -158,7 +177,7 @@ def convert_model_for_cli(text: str) -> str:
     return re.sub(r"^model:\s*\[([^\n]+)\]$", cli_model, text, flags=re.MULTILINE)
 
 
-def build_and_deploy():
+def build_and_deploy(args):
     if not AGENTS_DIR.exists():
         print(f"Error: {AGENTS_DIR} directory does not exist.")
         sys.exit(1)
@@ -201,17 +220,47 @@ def build_and_deploy():
     instructions_file = REPO_ROOT / "INSTRUCTIONS.md"
     if instructions_file.exists():
         instructions_text = instructions_file.read_text(encoding="utf-8")
-        instruction_targets = {
-            "GEMINI.md": instructions_text,
-            ".github/copilot-instructions.md": instructions_text,
-            "CLAUDE.md": instructions_text,
-            ".cursorrules": instructions_text,
-        }
+
+        instruction_targets = {}
+        if args.profile in ["copilot", "all"]:
+            instruction_targets[".github/copilot-instructions.md"] = instructions_text
+        if args.profile in ["antigravity", "all"]:
+            instruction_targets["GEMINI.md"] = instructions_text
+        if args.profile == "all":
+            instruction_targets.update({
+                "CLAUDE.md": instructions_text,
+                ".cursorrules": instructions_text,
+            })
+
         for rel_path, content in instruction_targets.items():
             target_path = REPO_ROOT / rel_path
             target_path.parent.mkdir(parents=True, exist_ok=True)
             target_path.write_text(content, encoding="utf-8")
-        print(f"  ✓ Compiled Project Instructions -> GEMINI.md, .github/copilot-instructions.md, CLAUDE.md, .cursorrules")
+
+        if args.profile == "all":
+            print("  ✓ Compiled Project Instructions -> GEMINI.md, .github/copilot-instructions.md, CLAUDE.md, .cursorrules")
+        elif args.profile == "copilot":
+            # Clean up stale generated GEMINI.md only when it matches INSTRUCTIONS.md content.
+            stale_gemini = REPO_ROOT / "GEMINI.md"
+            if stale_gemini.exists():
+                try:
+                    if stale_gemini.read_text(encoding="utf-8") == instructions_text:
+                        stale_gemini.unlink()
+                        print("  ✓ Removed stale generated GEMINI.md (Copilot profile)")
+                except Exception:
+                    pass
+            print("  ✓ Compiled Project Instructions -> .github/copilot-instructions.md")
+        else:
+            # Clean up stale generated Copilot instructions only when it matches INSTRUCTIONS.md content.
+            stale_copilot = REPO_ROOT / ".github" / "copilot-instructions.md"
+            if stale_copilot.exists():
+                try:
+                    if stale_copilot.read_text(encoding="utf-8") == instructions_text:
+                        stale_copilot.unlink()
+                        print("  ✓ Removed stale generated .github/copilot-instructions.md (Antigravity profile)")
+                except Exception:
+                    pass
+            print("  ✓ Compiled Project Instructions -> GEMINI.md")
 
     # 4. Deploy to System Target Paths
     target_paths = get_target_paths()
@@ -286,4 +335,5 @@ def build_and_deploy():
 
 
 if __name__ == "__main__":
-    build_and_deploy()
+    cli_args = parse_args()
+    build_and_deploy(cli_args)
